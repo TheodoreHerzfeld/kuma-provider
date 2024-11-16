@@ -1,23 +1,22 @@
-# Terraform Provider Scaffolding (Terraform Plugin Framework)
+# Kuma-provider
 
-_This template repository is built on the [Terraform Plugin Framework](https://github.com/hashicorp/terraform-plugin-framework). The template repository built on the [Terraform Plugin SDK](https://github.com/hashicorp/terraform-plugin-sdk) can be found at [terraform-provider-scaffolding](https://github.com/hashicorp/terraform-provider-scaffolding). See [Which SDK Should I Use?](https://developer.hashicorp.com/terraform/plugin/framework-benefits) in the Terraform documentation for additional information._
+This project aims to create a terraform provider (named "uptime-kuma" in terraform code) for the [Uptime-Kuma selfhosted monitoring system](https://github.com/louislam/uptime-kuma).
 
-This repository is a *template* for a [Terraform](https://www.terraform.io) provider. It is intended as a starting point for creating Terraform providers, containing:
+This repository is built on the [Terraform Plugin Framework](https://github.com/hashicorp/terraform-plugin-framework). The template repository built on the [Terraform Plugin SDK](https://github.com/hashicorp/terraform-plugin-sdk) can be found at [terraform-provider-scaffolding](https://github.com/hashicorp/terraform-provider-scaffolding) and is used as the basis for this project.
 
-- A resource and a data source (`internal/provider/`),
-- Examples (`examples/`) and generated documentation (`docs/`),
-- Miscellaneous meta files.
+This project has not yet been published to the Terraform Registry. See instructions below for local development/usage.
 
-These files contain boilerplate code that you will need to edit to create your own Terraform provider. Tutorials for creating Terraform providers can be found on the [HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/providers-plugin-framework) platform. _Terraform Plugin Framework specific guides are titled accordingly._
-
-Please see the [GitHub template repository documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) for how to create a new repository from this template on GitHub.
-
-Once you've written your provider, you'll want to [publish it on the Terraform Registry](https://developer.hashicorp.com/terraform/registry/providers/publishing) so that others can use it.
+### NOTE
+This project's current goal is not to get a working provider. Without the official API, and the webapi layer in use being over a year out of development
+and showing some bugs, it is unlikely to have a working provider. For now, the goal is to create the framework for when the official API is released, with
+focuses on creating schemas and resources setup for later use.
 
 ## Requirements
 
 - [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.0
 - [Go](https://golang.org/doc/install) >= 1.22
+- [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)
+
 
 ## Building The Provider
 
@@ -45,11 +44,26 @@ Then commit the changes to `go.mod` and `go.sum`.
 
 ## Using the provider
 
-Fill this in for each provider
+See [Prepare Terraform for local provider install](https://developer.hashicorp.com/terraform/tutorials/providers-plugin-framework/providers-plugin-framework-provider#prepare-terraform-for-local-provider-install) for information on how to point your Terraform binary to your local build
+for development (using the `~/.terraformrc` file).
+
+While not published yet, the registry url will probably be `hashicorp.com/theodoreherzfeld/uptime-kuma`.
 
 ## Developing the Provider
 
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (see [Requirements](#requirements) above).
+Start by setting up the `docker-compose.yml` file:
+
+1. set `KUMA_USERNAME` and `KUMA_PASSWORD` to what you INTEND to use as the login credentials for your development uptime-kuma instance
+2. run `docker compose up` to start the development environment. Connect to the development uptime-kuma instance at `localhost:3069` and 
+    setup the admin account
+3. connect to the webapi at `localhost:8000` for information about the API during development
+4. ?
+5. profit!
+
+Until the official API is released, the provider configuration should point to the API, not directly to the uptime-kuma instance. The credentials
+for access are set by the environment variables attached to the API service in `docker-compose.yml`.
+
+---
 
 To compile the provider, run `go install`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
 
@@ -57,8 +71,20 @@ To generate or update documentation, run `make generate`.
 
 In order to run the full suite of Acceptance tests, run `make testacc`.
 
-*Note:* Acceptance tests create real resources, and often cost money to run.
-
 ```shell
 make testacc
 ```
+
+## Todos:
+1. github actions, publish to registry (probably gonna wait a while on this)
+
+## Features so far:
+
+Provider:
+* password-based login
+
+Data sources:
+1. user
+
+Resources:
+1. monitor - broken as hell - suspect issues with the API layer
