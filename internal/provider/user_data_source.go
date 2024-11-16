@@ -115,8 +115,8 @@ func (d *authData) Read(ctx context.Context, req datasource.ReadRequest, resp *d
 	state.Created_At = types.StringValue(tout.Created_At)
 	state.Last_Visit = types.StringValue(tout.Last_Visit)
 
-	setDiags := resp.State.Set(ctx, &state)
-	resp.Diagnostics.Append(setDiags...)
+	diags = resp.State.Set(ctx, &state)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
