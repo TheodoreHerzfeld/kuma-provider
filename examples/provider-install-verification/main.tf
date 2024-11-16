@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     uptime-kuma = {
-      source = "hashicorp.com/redted/uptime-kuma"
+      source = "hashicorp.com/theodoreherzfeld/uptime-kuma"
     }
   }
 }

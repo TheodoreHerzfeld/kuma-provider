@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int32default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -94,31 +94,31 @@ func (r *monitorResource) Schema(ctx context.Context, _ resource.SchemaRequest, 
 				Computed: true,
 				Default:  stringdefault.StaticString("GET"),
 			},
-			"port": schema.Int32Attribute{
+			"port": schema.Int64Attribute{
 				Required: false,
 				Computed: true,
-				Default:  int32default.StaticInt32(80),
+				Default:  int64default.StaticInt64(80),
 				// TODO: validate that this is reasonable
 			},
-			"interval": schema.Int32Attribute{
+			"interval": schema.Int64Attribute{
 				Required: false,
 				Computed: true,
-				Default:  int32default.StaticInt32(60),
+				Default:  int64default.StaticInt64(60),
 			},
-			"max_retries": schema.Int32Attribute{
+			"max_retries": schema.Int64Attribute{
 				Required: false,
 				Computed: true,
-				Default:  int32default.StaticInt32(0),
+				Default:  int64default.StaticInt64(0),
 			},
-			"retry_interval": schema.Int32Attribute{
+			"retry_interval": schema.Int64Attribute{
 				Required: false,
 				Computed: true,
-				Default:  int32default.StaticInt32(60),
+				Default:  int64default.StaticInt64(60),
 			},
-			"resend_interval": schema.Int32Attribute{
+			"resend_interval": schema.Int64Attribute{
 				Required: false,
 				Computed: true,
-				Default:  int32default.StaticInt32(0),
+				Default:  int64default.StaticInt64(0),
 			},
 			"upside_down": schema.BoolAttribute{
 				Required: false,
@@ -140,10 +140,10 @@ func (r *monitorResource) Schema(ctx context.Context, _ resource.SchemaRequest, 
 				Computed: true,
 				Default:  booldefault.StaticBool(false),
 			},
-			"max_redirects": schema.Int32Attribute{
+			"max_redirects": schema.Int64Attribute{
 				Required: false,
 				Computed: true,
-				Default:  int32default.StaticInt32(10),
+				Default:  int64default.StaticInt64(10),
 			},
 			"accepted_statuscodes": schema.SetAttribute{
 				ElementType: types.StringType,
@@ -151,9 +151,10 @@ func (r *monitorResource) Schema(ctx context.Context, _ resource.SchemaRequest, 
 				Computed:    true,
 				Default:     setdefault.StaticValue(defaultCodes),
 			},
-			"proxy_id": schema.Int32Attribute{
+			"proxy_id": schema.Int64Attribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"body": schema.StringAttribute{
 				Required: false,
@@ -162,47 +163,58 @@ func (r *monitorResource) Schema(ctx context.Context, _ resource.SchemaRequest, 
 			"headers": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"auth_method": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"basic_auth_user": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"basic_auth_pass": schema.StringAttribute{
 				Required:  false,
 				Optional:  true,
 				Sensitive: true,
+				Computed:  true,
 			},
 			"auth_domain": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"auth_workstation": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"keyword": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"hostname": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"dns_resolve_server": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"dns_resolve_type": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"mqtt_username": schema.StringAttribute{
 				Required: false,
 				Optional: true,
+				Computed: true,
 			},
 			"mqtt_password": schema.StringAttribute{
 				Required:  false,
@@ -230,7 +242,7 @@ func (r *monitorResource) Schema(ctx context.Context, _ resource.SchemaRequest, 
 				Required: false,
 				Optional: true,
 			},
-			"docker_host": schema.Int32Attribute{
+			"docker_host": schema.Int64Attribute{
 				Required: false,
 				Optional: true,
 			},
@@ -264,18 +276,18 @@ type monitorModel struct {
 	ID                       types.Int64  `tfsdk:"id"`
 	Type                     types.String `tfsdk:"type"`
 	Name                     types.String `tfsdk:"name"`
-	Interval                 types.Int32  `tfsdk:"interval"`
-	RetryInterval            types.Int32  `tfsdk:"retry_interval"`
-	ResendInterval           types.Int32  `tfsdk:"resend_interval"`
-	MaxRetries               types.Int32  `tfsdk:"max_retries"`
+	Interval                 types.Int64  `tfsdk:"interval"`
+	RetryInterval            types.Int64  `tfsdk:"retry_interval"`
+	ResendInterval           types.Int64  `tfsdk:"resend_interval"`
+	MaxRetries               types.Int64  `tfsdk:"max_retries"`
 	UpsideDown               types.Bool   `tfsdk:"upside_down"`
 	NotificationIDList       types.Set    `tfsdk:"notification_id_list"`
 	URL                      types.String `tfsdk:"url"`
 	ExpiryNotification       types.Bool   `tfsdk:"expiry_notification"`
 	IgnoreTls                types.Bool   `tfsdk:"ignore_tls"`
-	MaxRedirects             types.Int32  `tfsdk:"max_redirects"`
+	MaxRedirects             types.Int64  `tfsdk:"max_redirects"`
 	AcceptedStatusCodes      types.Set    `tfsdk:"accepted_statuscodes"`
-	ProxyID                  types.Int32  `tfsdk:"proxy_id"`
+	ProxyID                  types.Int64  `tfsdk:"proxy_id"`
 	Method                   types.String `tfsdk:"method"`
 	Body                     types.String `tfsdk:"body"`
 	Headers                  types.String `tfsdk:"headers"`
@@ -286,7 +298,7 @@ type monitorModel struct {
 	AuthWorkstation          types.String `tfsdk:"auth_workstation"`
 	Keyword                  types.String `tfsdk:"keyword"`
 	Hostname                 types.String `tfsdk:"hostname"`
-	Port                     types.Int32  `tfsdk:"port"`
+	Port                     types.Int64  `tfsdk:"port"`
 	DNSResolveServer         types.String `tfsdk:"dns_resolve_server"`
 	DNSResolveType           types.String `tfsdk:"dns_resolve_type"`
 	MQTTUsername             types.String `tfsdk:"mqtt_username"`
@@ -296,7 +308,7 @@ type monitorModel struct {
 	DatabaseConnectionString types.String `tfsdk:"database_connection_string"`
 	DatabaseQuery            types.String `tfsdk:"database_query"`
 	DockerContainer          types.String `tfsdk:"docker_container"`
-	DockerHost               types.Int32  `tfsdk:"docker_host"`
+	DockerHost               types.Int64  `tfsdk:"docker_host"`
 	RadiusUsername           types.String `tfsdk:"radius_username"`
 	RadiusPassword           types.String `tfsdk:"radius_password"`
 	RadiusSecret             types.String `tfsdk:"radius_secret"`
@@ -305,21 +317,21 @@ type monitorModel struct {
 }
 
 type JSON_monitorModel struct {
-	ID                       int      `json:"id"`
+	ID                       int64    `json:"id"`
 	Type                     string   `json:"type"`
 	Name                     string   `json:"name"`
-	Interval                 int32    `json:"interval"`
-	RetryInterval            int32    `json:"retry_interval"`
-	ResendInterval           int32    `json:"resend_interval"`
-	MaxRetries               int32    `json:"max_retries"`
+	Interval                 int64    `json:"interval"`
+	RetryInterval            int64    `json:"retry_interval"`
+	ResendInterval           int64    `json:"resend_interval"`
+	MaxRetries               int64    `json:"max_retries"`
 	UpsideDown               bool     `json:"upside_down"`
 	NotificationIDList       []string `json:"notification_id_list"`
 	URL                      string   `json:"url"`
 	ExpiryNotification       bool     `json:"expiry_notification"`
 	IgnoreTls                bool     `json:"ignore_tls"`
-	MaxRedirects             int32    `json:"max_redirects"`
+	MaxRedirects             int64    `json:"max_redirects"`
 	AcceptedStatusCodes      []string `json:"accepted_statuscodes"`
-	ProxyID                  int32    `json:"proxy_id"`
+	ProxyID                  int64    `json:"proxy_id"`
 	Method                   string   `json:"method"`
 	Body                     string   `json:"body"`
 	Headers                  string   `json:"headers"`
@@ -330,7 +342,7 @@ type JSON_monitorModel struct {
 	AuthWorkstation          string   `json:"auth_workstation"`
 	Keyword                  string   `json:"keyword"`
 	Hostname                 string   `json:"hostname"`
-	Port                     int32    `json:"port"`
+	Port                     int64    `json:"port"`
 	DNSResolveServer         string   `json:"dns_resolve_server"`
 	DNSResolveType           string   `json:"dns_resolve_type"`
 	MQTTUsername             string   `json:"mqtt_username"`
@@ -340,7 +352,7 @@ type JSON_monitorModel struct {
 	DatabaseConnectionString string   `json:"database_connection_string"`
 	DatabaseQuery            string   `json:"database_query"`
 	DockerContainer          string   `json:"docker_container"`
-	DockerHost               int32    `json:"docker_host"`
+	DockerHost               int64    `json:"docker_host"`
 	RadiusUsername           string   `json:"radius_username"`
 	RadiusPassword           string   `json:"radius_password"`
 	RadiusSecret             string   `json:"radius_secret"`
@@ -375,23 +387,23 @@ func (r *monitorResource) Create(ctx context.Context, req resource.CreateRequest
 	diags = plan.AcceptedStatusCodes.ElementsAs(ctx, &notificationIDs, false)
 	resp.Diagnostics.Append(diags...)
 
-	tflog.Debug(ctx, "STAGE: map json representation")
+	tflog.Debug(ctx, "STAGE: map json representation - NAME:"+plan.Name.String()+"|"+cleanString(plan.Name.String()))
 
 	makeMon := JSON_monitorModel{
 		Type:                     cleanString(plan.Type.String()),
 		Name:                     cleanString(plan.Name.String()),
-		Interval:                 plan.Interval.ValueInt32(),
-		RetryInterval:            plan.RetryInterval.ValueInt32(),
-		ResendInterval:           plan.ResendInterval.ValueInt32(),
-		MaxRetries:               plan.MaxRetries.ValueInt32(),
+		Interval:                 plan.Interval.ValueInt64(),
+		RetryInterval:            plan.RetryInterval.ValueInt64(),
+		ResendInterval:           plan.ResendInterval.ValueInt64(),
+		MaxRetries:               plan.MaxRetries.ValueInt64(),
 		UpsideDown:               plan.UpsideDown.ValueBool(),
 		NotificationIDList:       notificationIDs,
 		URL:                      cleanString(plan.URL.String()),
 		ExpiryNotification:       plan.ExpiryNotification.ValueBool(),
 		IgnoreTls:                plan.IgnoreTls.ValueBool(),
-		MaxRedirects:             plan.MaxRedirects.ValueInt32(),
+		MaxRedirects:             plan.MaxRedirects.ValueInt64(),
 		AcceptedStatusCodes:      acceptedStatusCodes,
-		ProxyID:                  plan.ProxyID.ValueInt32(),
+		ProxyID:                  plan.ProxyID.ValueInt64(),
 		Method:                   cleanString(plan.Method.String()),
 		Body:                     cleanString(plan.Body.String()),
 		Headers:                  cleanString(plan.Headers.String()),
@@ -402,7 +414,7 @@ func (r *monitorResource) Create(ctx context.Context, req resource.CreateRequest
 		AuthWorkstation:          cleanString(plan.AuthWorkstation.String()),
 		Keyword:                  cleanString(plan.Keyword.String()),
 		Hostname:                 cleanString(plan.Hostname.String()),
-		Port:                     plan.Port.ValueInt32(),
+		Port:                     plan.Port.ValueInt64(),
 		DNSResolveServer:         cleanString(plan.DNSResolveServer.String()),
 		DNSResolveType:           cleanString(plan.DNSResolveType.String()),
 		MQTTUsername:             cleanString(plan.MQTTUsername.String()),
@@ -412,7 +424,7 @@ func (r *monitorResource) Create(ctx context.Context, req resource.CreateRequest
 		DatabaseConnectionString: cleanString(plan.DatabaseConnectionString.String()),
 		DatabaseQuery:            cleanString(plan.DatabaseQuery.String()),
 		DockerContainer:          cleanString(plan.DockerContainer.String()),
-		DockerHost:               plan.DockerHost.ValueInt32(),
+		DockerHost:               plan.DockerHost.ValueInt64(),
 		RadiusUsername:           cleanString(plan.RadiusUsername.String()),
 		RadiusPassword:           cleanString(plan.RadiusPassword.String()),
 		RadiusSecret:             cleanString(plan.RadiusSecret.String()),
@@ -429,7 +441,7 @@ func (r *monitorResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	tflog.Debug(ctx, "MONITOR JSON: "+string(debugJSON))
+	tflog.Debug(ctx, "NEW MONITOR JSON: "+string(debugJSON))
 
 	var newMon JSON_monitorModel
 	err = requests.
@@ -439,7 +451,6 @@ func (r *monitorResource) Create(ctx context.Context, req resource.CreateRequest
 		BodyJSON(&makeMon).
 		ToJSON(&newMon).
 		Fetch(ctx)
-
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating new monitor (api call)",
@@ -448,7 +459,58 @@ func (r *monitorResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	diags = resp.State.Set(ctx, plan)
+	tflog.Debug(ctx, "STAGE: map new monitor onto schema")
+
+	newNotificationIDList, diags := types.SetValueFrom(ctx, types.StringType, newMon.NotificationIDList)
+	resp.Diagnostics.Append(diags...)
+	newAcceptedStatusCodes, diags := types.SetValueFrom(ctx, types.StringType, newMon.AcceptedStatusCodes)
+	resp.Diagnostics.Append(diags...)
+
+	resultMon := monitorModel{
+		ID:                       types.Int64Value(newMon.ID),
+		Type:                     types.StringValue(newMon.Type),
+		Name:                     types.StringValue(newMon.Name),
+		Interval:                 types.Int64Value(newMon.Interval),
+		RetryInterval:            types.Int64Value(newMon.RetryInterval),
+		ResendInterval:           types.Int64Value(newMon.ResendInterval),
+		MaxRetries:               types.Int64Value(newMon.MaxRetries),
+		UpsideDown:               types.BoolValue(newMon.UpsideDown),
+		NotificationIDList:       newNotificationIDList,
+		URL:                      types.StringValue(newMon.URL),
+		ExpiryNotification:       types.BoolValue(newMon.ExpiryNotification),
+		IgnoreTls:                types.BoolValue(newMon.IgnoreTls),
+		MaxRedirects:             types.Int64Value(newMon.MaxRedirects),
+		AcceptedStatusCodes:      newAcceptedStatusCodes,
+		ProxyID:                  types.Int64Value(newMon.ProxyID),
+		Method:                   types.StringValue(newMon.Method),
+		Body:                     types.StringValue(newMon.Body),
+		Headers:                  types.StringValue(newMon.Headers),
+		AuthMethod:               types.StringValue(newMon.AuthMethod),
+		BasicAuthUser:            types.StringValue(newMon.BasicAuthUser),
+		BasicAuthPass:            types.StringValue(newMon.BasicAuthPass),
+		AuthDomain:               types.StringValue(newMon.AuthDomain),
+		AuthWorkstation:          types.StringValue(newMon.AuthWorkstation),
+		Keyword:                  types.StringValue(newMon.Keyword),
+		Hostname:                 types.StringValue(newMon.Hostname),
+		Port:                     types.Int64Value(newMon.Port),
+		DNSResolveServer:         types.StringValue(newMon.DNSResolveServer),
+		DNSResolveType:           types.StringValue(newMon.DNSResolveType),
+		MQTTUsername:             types.StringValue(newMon.MQTTUsername),
+		MQTTPassword:             types.StringValue(newMon.MQTTPassword),
+		MQTTTopic:                types.StringValue(newMon.MQTTTopic),
+		MQTTSucessMessage:        types.StringValue(newMon.MQTTSucessMessage),
+		DatabaseConnectionString: types.StringValue(newMon.DatabaseConnectionString),
+		DatabaseQuery:            types.StringValue(newMon.DatabaseQuery),
+		DockerContainer:          types.StringValue(newMon.DockerContainer),
+		DockerHost:               types.Int64Value(newMon.DockerHost),
+		RadiusUsername:           types.StringValue(newMon.RadiusUsername),
+		RadiusPassword:           types.StringValue(newMon.RadiusPassword),
+		RadiusSecret:             types.StringValue(newMon.RadiusSecret),
+		RadiusCalledStationId:    types.StringValue(newMon.RadiusCalledStationId),
+		RadiusCallingStationId:   types.StringValue(newMon.RadiusCallingStationId),
+	}
+
+	diags = resp.State.Set(ctx, resultMon)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
