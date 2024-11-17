@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -175,15 +176,6 @@ func (p *uptimeKumaProvider) Configure(ctx context.Context, req provider.Configu
 		return
 	}
 
-	//
-	// 	loginString, err := json.Marshal(login)
-	// 	if err != nil {
-	// 		resp.Diagnostics.AddAttributeError(path.Root("host"),
-	// 			"Error creating login data",
-	// 			"Error creating login data"+err.Error(),
-	// 		)
-	// 	}
-
 	loginForm := url.Values{
 		"username": {username},
 		"password": {password},
@@ -193,6 +185,13 @@ func (p *uptimeKumaProvider) Configure(ctx context.Context, req provider.Configu
 		Access_Token string
 		Token_Type   string
 	}
+
+	ctx = tflog.SetField(ctx, "host", host)
+	ctx = tflog.SetField(ctx, "username", username)
+	ctx = tflog.SetField(ctx, "password", password)
+	ctx = tflog.MaskFieldValuesWithFieldKeys(ctx, "password")
+
+	tflog.Info(ctx, "Getting auth token")
 
 	loginResp, err := http.Post(host+"/login/access-token", "application/x-www-form-urlencoded", strings.NewReader(loginForm.Encode()))
 	if err != nil {
@@ -238,6 +237,8 @@ func (p *uptimeKumaProvider) Configure(ctx context.Context, req provider.Configu
 
 	resp.DataSourceData = auth
 	resp.ResourceData = auth
+
+	tflog.Info(ctx, "Successfully got an auth token", map[string]any{"success": true})
 }
 
 // DataSources defines the data sources implemented in the provider.

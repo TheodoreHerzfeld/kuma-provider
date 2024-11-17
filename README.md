@@ -83,4 +83,8 @@ make testacc
 Provider:
 * password-based login
 
-Data sources
+Data sources:
+1. user
+
+Resources:
+1. monitor - broken as hell - suspect issues with the API layer

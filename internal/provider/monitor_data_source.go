@@ -414,9 +414,7 @@ func (d *data_monitorAuth) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 
 	tflog.Debug(ctx, "Request got "+respDebug)
-	tflog.Debug(ctx, "NAME IS "+response.Monitor.Name)
 
-	// TODO: loopify this - it's ugly
 	notificationIDs, diags := types.SetValueFrom(ctx, types.NumberType, response.Monitor.NotificationIDList)
 	resp.Diagnostics.Append(diags...)
 	acceptedStatusCodes, diags := types.SetValueFrom(ctx, types.StringType, response.Monitor.AcceptedStatusCodes)
