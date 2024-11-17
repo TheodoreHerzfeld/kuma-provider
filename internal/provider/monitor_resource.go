@@ -7,16 +7,20 @@ import (
 	"strings"
 
 	"github.com/carlmjohnson/requests"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
+
+func cleanString(dirty string) string {
+
+	tout := strings.Trim(dirty, "\"")
+	tout = strings.TrimLeft(tout, "<")
+	tout = strings.TrimRight(tout, ">")
+
+	return tout
+}
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
@@ -69,304 +73,266 @@ func (r *monitorResource) Metadata(_ context.Context, req resource.MetadataReque
 
 // Schema defines the schema for the resource.
 func (r *monitorResource) Schema(ctx context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	defaultCodes, diags := types.SetValue(types.StringType, []attr.Value{types.StringValue("200")})
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	// defaultCodes, diags := types.SetValue(types.StringType, []attr.Value{types.StringValue("200")})
+	// resp.Diagnostics.Append(diags...)
+	// if resp.Diagnostics.HasError() {
+	// 	return
+	// }
 
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.Int64Attribute{
 				Computed: true,
 			},
+			"type": schema.StringAttribute{
+				Required: true,
+			},
 			"name": schema.StringAttribute{
 				Required: true,
 			},
-			"type": schema.StringAttribute{
-				Required: true,
+			"interval": schema.Int64Attribute{
+				Required: false,
+				Optional: true,
+			},
+			"retry_interval": schema.Int64Attribute{
+				Optional: true,
+			},
+			"resend_interval": schema.Int64Attribute{
+				Optional: true,
+			},
+			"max_retries": schema.Int64Attribute{
+				Optional: true,
+			},
+			"upside_down": schema.BoolAttribute{
+				Optional: true,
+			},
+			"notification_id_list": schema.SetAttribute{
+				ElementType: types.Int64Type,
+				Optional:    true,
 			},
 			"url": schema.StringAttribute{
 				Required: true,
 			},
-			"method": schema.StringAttribute{
-				Required: false,
-				Computed: true,
-				Default:  stringdefault.StaticString("GET"),
-			},
-			"port": schema.Int64Attribute{
-				Required: false,
-				Computed: true,
-				Default:  int64default.StaticInt64(80),
-				// TODO: validate that this is reasonable
-			},
-			"interval": schema.Int64Attribute{
-				Required: false,
-				Computed: true,
-				Default:  int64default.StaticInt64(60),
-			},
-			"max_retries": schema.Int64Attribute{
-				Required: false,
-				Computed: true,
-				Default:  int64default.StaticInt64(0),
-			},
-			"retry_interval": schema.Int64Attribute{
-				Required: false,
-				Computed: true,
-				Default:  int64default.StaticInt64(60),
-			},
-			"resend_interval": schema.Int64Attribute{
-				Required: false,
-				Computed: true,
-				Default:  int64default.StaticInt64(0),
-			},
-			"upside_down": schema.BoolAttribute{
-				Required: false,
-				Computed: true,
-				Default:  booldefault.StaticBool(false),
-			},
-			"notification_id_list": schema.SetAttribute{
-				ElementType: types.StringType,
-				Required:    false,
-				Optional:    true,
-			},
 			"expiry_notification": schema.BoolAttribute{
-				Required: false,
-				Computed: true,
-				Default:  booldefault.StaticBool(false),
+				Optional: true,
 			},
 			"ignore_tls": schema.BoolAttribute{
-				Required: false,
-				Computed: true,
-				Default:  booldefault.StaticBool(false),
+				Optional: true,
 			},
 			"max_redirects": schema.Int64Attribute{
-				Required: false,
-				Computed: true,
-				Default:  int64default.StaticInt64(10),
+				Optional: true,
 			},
 			"accepted_statuscodes": schema.SetAttribute{
 				ElementType: types.StringType,
-				Required:    false,
-				Computed:    true,
-				Default:     setdefault.StaticValue(defaultCodes),
+				Optional:    true,
 			},
 			"proxy_id": schema.Int64Attribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
+			},
+			"method": schema.StringAttribute{
+				Optional: true,
 			},
 			"body": schema.StringAttribute{
-				Required: false,
 				Optional: true,
 			},
 			"headers": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"auth_method": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"basic_auth_user": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"basic_auth_pass": schema.StringAttribute{
-				Required:  false,
 				Optional:  true,
 				Sensitive: true,
-				Computed:  true,
 			},
 			"auth_domain": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"auth_workstation": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"keyword": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"hostname": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
+			},
+			"port": schema.Int64Attribute{
+				Optional: true,
 			},
 			"dns_resolve_server": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"dns_resolve_type": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"mqtt_username": schema.StringAttribute{
-				Required: false,
 				Optional: true,
-				Computed: true,
 			},
 			"mqtt_password": schema.StringAttribute{
-				Required:  false,
 				Optional:  true,
 				Sensitive: true,
 			},
 			"mqtt_topic": schema.StringAttribute{
-				Required: false,
 				Optional: true,
 			},
 			"mqtt_success_message": schema.StringAttribute{
-				Required: false,
 				Optional: true,
 			},
 			"database_connection_string": schema.StringAttribute{
-				Required:  false,
 				Optional:  true,
 				Sensitive: true,
 			},
 			"database_query": schema.StringAttribute{
-				Required: false,
 				Optional: true,
 			},
 			"docker_container": schema.StringAttribute{
-				Required: false,
 				Optional: true,
 			},
 			"docker_host": schema.Int64Attribute{
-				Required: false,
 				Optional: true,
 			},
 			"radius_username": schema.StringAttribute{
-				Required: false,
 				Optional: true,
 			},
 			"radius_password": schema.StringAttribute{
-				Required:  false,
 				Optional:  true,
 				Sensitive: true,
 			},
 			"radius_secret": schema.StringAttribute{
-				Required:  false,
 				Optional:  true,
 				Sensitive: true,
 			},
 			"radius_called_station_id": schema.StringAttribute{
-				Required: false,
 				Optional: true,
 			},
 			"radius_calling_station_id": schema.StringAttribute{
-				Required: false,
+				Optional: true,
+			},
+			"active": schema.BoolAttribute{
+				Optional: true,
+			},
+			"force_inactive": schema.BoolAttribute{
+				Optional: true,
+			},
+			"game": schema.StringAttribute{
+				Optional: true,
+			},
+			"gamedig_given_port_only": schema.BoolAttribute{
+				Optional: true,
+			},
+			"grpc_body": schema.StringAttribute{
+				Optional: true,
+			},
+			"grpc_enable_tls": schema.BoolAttribute{
+				Optional: true,
+			},
+			"grpc_metadata": schema.StringAttribute{
+				Optional: true,
+			},
+			"grpc_method": schema.StringAttribute{
+				Optional: true,
+			},
+			"grpc_protobuf": schema.StringAttribute{
+				Optional: true,
+			},
+			"grpc_service_name": schema.StringAttribute{
+				Optional: true,
+			},
+			"grpc_url": schema.StringAttribute{
+				Optional: true,
+			},
+			"http_body_encoding": schema.StringAttribute{
+				Optional: true,
+			},
+			"include_sensitive_data": schema.BoolAttribute{
+				Optional: true,
+			},
+			"invert_keyword": schema.BoolAttribute{
+				Optional: true,
+			},
+			"json_path": schema.StringAttribute{
+				Optional: true,
+			},
+			"kafka_producer_allow_auto_topic_creation": schema.BoolAttribute{
+				Optional: true,
+			},
+			"kafka_producer_brokers": schema.SetAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+			},
+			"kafka_producer_message": schema.StringAttribute{
+				Optional: true,
+			},
+			"kafka_producer_sasl_options": schema.StringAttribute{
+				Optional: true,
+			},
+			"kafka_producer_ssl": schema.BoolAttribute{
+				Optional: true,
+			},
+			"kafka_producer_topic": schema.StringAttribute{
+				Optional: true,
+			},
+			"maintenance": schema.BoolAttribute{
+				Optional: true,
+			},
+			"oauth_auth_method": schema.StringAttribute{
+				Optional: true,
+			},
+			"oauth_client_id": schema.StringAttribute{
+				Optional: true,
+			},
+			"oauth_client_secret": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
+			},
+			"oauth_scopes": schema.SetAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+			},
+			"oauth_token_url": schema.StringAttribute{
+				Optional: true,
+			},
+			"packet_size": schema.Int64Attribute{
+				Optional: true,
+			},
+			"parent": schema.StringAttribute{
+				Optional: true,
+			},
+			"path_name": schema.StringAttribute{
+				Optional: true,
+			},
+			"push_token": schema.StringAttribute{
+				Optional: true,
+			},
+			"screenshot": schema.StringAttribute{
+				Optional: true,
+			},
+			"tags": schema.SetAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+			},
+			"timeout": schema.Int64Attribute{
+				Optional: true,
+			},
+			"tls_ca": schema.StringAttribute{
+				Optional: true,
+			},
+			"tls_cert": schema.StringAttribute{
+				Optional: true,
+			},
+			"tls_key": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
+			},
+			"weight": schema.Int64Attribute{
 				Optional: true,
 			},
 		},
 	}
-}
-
-type monitorModel struct {
-	ID                       types.Int64  `tfsdk:"id"`
-	Type                     types.String `tfsdk:"type"`
-	Name                     types.String `tfsdk:"name"`
-	Interval                 types.Int64  `tfsdk:"interval"`
-	RetryInterval            types.Int64  `tfsdk:"retry_interval"`
-	ResendInterval           types.Int64  `tfsdk:"resend_interval"`
-	MaxRetries               types.Int64  `tfsdk:"max_retries"`
-	UpsideDown               types.Bool   `tfsdk:"upside_down"`
-	NotificationIDList       types.Set    `tfsdk:"notification_id_list"`
-	URL                      types.String `tfsdk:"url"`
-	ExpiryNotification       types.Bool   `tfsdk:"expiry_notification"`
-	IgnoreTls                types.Bool   `tfsdk:"ignore_tls"`
-	MaxRedirects             types.Int64  `tfsdk:"max_redirects"`
-	AcceptedStatusCodes      types.Set    `tfsdk:"accepted_statuscodes"`
-	ProxyID                  types.Int64  `tfsdk:"proxy_id"`
-	Method                   types.String `tfsdk:"method"`
-	Body                     types.String `tfsdk:"body"`
-	Headers                  types.String `tfsdk:"headers"`
-	AuthMethod               types.String `tfsdk:"auth_method"`
-	BasicAuthUser            types.String `tfsdk:"basic_auth_user"`
-	BasicAuthPass            types.String `tfsdk:"basic_auth_pass"`
-	AuthDomain               types.String `tfsdk:"auth_domain"`
-	AuthWorkstation          types.String `tfsdk:"auth_workstation"`
-	Keyword                  types.String `tfsdk:"keyword"`
-	Hostname                 types.String `tfsdk:"hostname"`
-	Port                     types.Int64  `tfsdk:"port"`
-	DNSResolveServer         types.String `tfsdk:"dns_resolve_server"`
-	DNSResolveType           types.String `tfsdk:"dns_resolve_type"`
-	MQTTUsername             types.String `tfsdk:"mqtt_username"`
-	MQTTPassword             types.String `tfsdk:"mqtt_password"`
-	MQTTTopic                types.String `tfsdk:"mqtt_topic"`
-	MQTTSucessMessage        types.String `tfsdk:"mqtt_success_message"`
-	DatabaseConnectionString types.String `tfsdk:"database_connection_string"`
-	DatabaseQuery            types.String `tfsdk:"database_query"`
-	DockerContainer          types.String `tfsdk:"docker_container"`
-	DockerHost               types.Int64  `tfsdk:"docker_host"`
-	RadiusUsername           types.String `tfsdk:"radius_username"`
-	RadiusPassword           types.String `tfsdk:"radius_password"`
-	RadiusSecret             types.String `tfsdk:"radius_secret"`
-	RadiusCalledStationId    types.String `tfsdk:"radius_called_station_id"`
-	RadiusCallingStationId   types.String `tfsdk:"radius_calling_station_id"`
-}
-
-type JSON_monitorModel struct {
-	ID                       int64    `json:"id"`
-	Type                     string   `json:"type"`
-	Name                     string   `json:"name"`
-	Interval                 int64    `json:"interval"`
-	RetryInterval            int64    `json:"retry_interval"`
-	ResendInterval           int64    `json:"resend_interval"`
-	MaxRetries               int64    `json:"max_retries"`
-	UpsideDown               bool     `json:"upside_down"`
-	NotificationIDList       []string `json:"notification_id_list"`
-	URL                      string   `json:"url"`
-	ExpiryNotification       bool     `json:"expiry_notification"`
-	IgnoreTls                bool     `json:"ignore_tls"`
-	MaxRedirects             int64    `json:"max_redirects"`
-	AcceptedStatusCodes      []string `json:"accepted_statuscodes"`
-	ProxyID                  int64    `json:"proxy_id"`
-	Method                   string   `json:"method"`
-	Body                     string   `json:"body"`
-	Headers                  string   `json:"headers"`
-	AuthMethod               string   `json:"auth_method"`
-	BasicAuthUser            string   `json:"basic_auth_user"`
-	BasicAuthPass            string   `json:"basic_auth_pass"`
-	AuthDomain               string   `json:"auth_domain"`
-	AuthWorkstation          string   `json:"auth_workstation"`
-	Keyword                  string   `json:"keyword"`
-	Hostname                 string   `json:"hostname"`
-	Port                     int64    `json:"port"`
-	DNSResolveServer         string   `json:"dns_resolve_server"`
-	DNSResolveType           string   `json:"dns_resolve_type"`
-	MQTTUsername             string   `json:"mqtt_username"`
-	MQTTPassword             string   `json:"mqtt_password"`
-	MQTTTopic                string   `json:"mqtt_topic"`
-	MQTTSucessMessage        string   `json:"mqtt_success_message"`
-	DatabaseConnectionString string   `json:"database_connection_string"`
-	DatabaseQuery            string   `json:"database_query"`
-	DockerContainer          string   `json:"docker_container"`
-	DockerHost               int64    `json:"docker_host"`
-	RadiusUsername           string   `json:"radius_username"`
-	RadiusPassword           string   `json:"radius_password"`
-	RadiusSecret             string   `json:"radius_secret"`
-	RadiusCalledStationId    string   `json:"radius_called_station_id"`
-	RadiusCallingStationId   string   `json:"radius_calling_station_id"`
-}
-
-func cleanString(dirty string) string {
-
-	tout := strings.Trim(dirty, "\"")
-	tout = strings.TrimLeft(tout, "<")
-	tout = strings.TrimRight(tout, ">")
-
-	return tout
 }
 
 // Create creates the resource and sets the initial Terraform state.

@@ -45,6 +45,7 @@ type uptimeKumaProvider struct {
 	version string
 }
 
+// NOTE: this is interpreted as different types in other resources
 type authData struct {
 	Host  string
 	Token string
@@ -237,6 +238,7 @@ func (p *uptimeKumaProvider) Configure(ctx context.Context, req provider.Configu
 func (p *uptimeKumaProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewUserDataSource,
+		NewMonitorDataSource,
 	}
 }
 

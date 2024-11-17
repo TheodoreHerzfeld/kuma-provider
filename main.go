@@ -7,6 +7,7 @@ import (
 	"context"
 	"flag"
 	"log"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 
@@ -21,6 +22,16 @@ var (
 	// goreleaser can pass other information to the main package, such as the specific commit
 	// https://goreleaser.com/cookbooks/using-main.version/
 )
+
+// helper funcs
+func cleanString(dirty string) string {
+
+	tout := strings.Trim(dirty, "\"")
+	tout = strings.TrimLeft(tout, "<")
+	tout = strings.TrimRight(tout, ">")
+
+	return tout
+}
 
 func main() {
 	var debug bool
