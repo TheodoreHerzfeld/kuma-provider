@@ -12,24 +12,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-type data_tagAuth struct {
+type data_serverInfoAuth struct {
 	Host  string
 	Token string
 }
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &data_tagAuth{}
-	_ datasource.DataSourceWithConfigure = &data_tagAuth{}
+	_ datasource.DataSource              = &data_serverInfoAuth{}
+	_ datasource.DataSourceWithConfigure = &data_serverInfoAuth{}
 )
 
 // NewUserDataSource is a helper function to simplify the provider implementation.
-func NewTagDataSource() datasource.DataSource {
-	return &data_tagAuth{}
+func NewServerInfoDataSource() datasource.DataSource {
+	return &data_serverInfoAuth{}
 }
 
 // Configure adds the provider configured client to the data source.
-func (d *data_tagAuth) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *data_serverInfoAuth) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
@@ -50,47 +50,43 @@ func (d *data_tagAuth) Configure(_ context.Context, req datasource.ConfigureRequ
 }
 
 // Metadata returns the data source type name.
-func (d *data_tagAuth) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_tag"
+func (d *data_serverInfoAuth) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_server_info"
 }
 
 // Schema defines the schema for the data source.
-func (d *data_tagAuth) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *data_serverInfoAuth) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
-			"id": schema.Int64Attribute{
-				Required: true,
-			},
-			"name": schema.StringAttribute{
+			"primary_base_url": schema.StringAttribute{
 				Computed: true,
 			},
-			"color": schema.StringAttribute{
+			"server_timezone": schema.StringAttribute{
+				Computed: true,
+			},
+			"server_timezone_offset": schema.StringAttribute{
 				Computed: true,
 			},
 		},
 	}
 }
 
-type tagDataModel struct {
-	ID    types.Int64  `tfsdk:"id"`
-	Name  types.String `tfsdk:"name"`
-	Color types.String `tfsdk:"color"`
+type serverInfoModel struct {
+	PrimaryBaseUrl       types.String `tfsdk:"primary_base_url"`
+	ServerTimezone       types.String `tfsdk:"server_timezone"`
+	ServerTimezoneOffset types.String `tfsdk:"server_timezone_offset"`
 }
 
-type JSON_tagDataModel struct {
-	ID    int64  `json:"id"`
-	Name  string `json:"name"`
-	Color string `json:"color"`
-}
-
-type tagResponse struct {
-	Tag JSON_tagDataModel `json:"tag"`
+type JSON_serverInfoModel struct {
+	PrimaryBaseUrl       string `json:"primaryBaseUrl"`
+	ServerTimezone       string `json:"serverTimezone"`
+	ServerTimezoneOffset string `json:"serverTimezoneOffset"`
 }
 
 // Read refreshes the Terraform state with the latest data.
-func (d *data_tagAuth) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *data_serverInfoAuth) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 
-	var state tagDataModel
+	var state serverInfoModel
 
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -98,15 +94,13 @@ func (d *data_tagAuth) Read(ctx context.Context, req datasource.ReadRequest, res
 		return
 	}
 
-	id := cleanString(state.ID.String())
-
-	tflog.Debug(ctx, "Requesting "+d.Host+"/tags/"+id)
+	tflog.Debug(ctx, "Requesting "+d.Host+"/info/")
 
 	var responseString string
 	err := requests.
 		URL(d.Host).
 		Bearer(d.Token).
-		Path("/tags/" + id).
+		Path("/info/").
 		ToString(&responseString).
 		Fetch(ctx)
 	if err != nil {
@@ -116,7 +110,7 @@ func (d *data_tagAuth) Read(ctx context.Context, req datasource.ReadRequest, res
 		)
 	}
 
-	var response tagResponse
+	var response JSON_serverInfoModel
 	err = json.Unmarshal([]byte(responseString), &response)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -127,9 +121,9 @@ func (d *data_tagAuth) Read(ctx context.Context, req datasource.ReadRequest, res
 
 	tflog.Debug(ctx, "Got tag data: "+responseString)
 
-	state.ID = types.Int64Value(response.Tag.ID)
-	state.Name = types.StringValue(response.Tag.Name)
-	state.Color = types.StringValue(response.Tag.Color)
+	state.PrimaryBaseUrl = types.StringValue(response.PrimaryBaseUrl)
+	state.ServerTimezone = types.StringValue(response.ServerTimezone)
+	state.ServerTimezoneOffset = types.StringValue(response.ServerTimezoneOffset)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

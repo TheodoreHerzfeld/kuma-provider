@@ -247,6 +247,7 @@ func (p *uptimeKumaProvider) DataSources(_ context.Context) []func() datasource.
 		NewMonitorDataSource,
 		NewUsersDataSource,
 		NewTagDataSource,
+		NewServerInfoDataSource,
 	}
 }
 

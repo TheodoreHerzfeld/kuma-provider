@@ -29,6 +29,8 @@ data "uptime-kuma_tag" "tag" {
 
 data "uptime-kuma_users" "users" {}
 
+data "uptime-kuma_server_info" "serverinfo" {}
+
 resource "local_sensitive_file" "testmonitordata" {
   filename = "./monitor.yml"
   content = yamlencode(data.uptime-kuma_monitor.testmonitordata)
@@ -46,12 +48,7 @@ output "tag" {
   value = data.uptime-kuma_tag.tag
 }
 
-# resource "uptime-kuma_monitor" "testresource" {
-#   name = "testmon"
-#   url = "google.com"
-#   type = "http"
-# }
-# 
-# output "test" {
-#   value = data.uptime-kuma_user.testdata
-# }
+output "serverinfo" {
+  value = data.uptime-kuma_server_info.serverinfo
+}
+
