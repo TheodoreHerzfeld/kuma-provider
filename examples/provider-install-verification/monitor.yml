@@ -69,7 +69,11 @@
 "resend_interval": 0
 "retry_interval": 0
 "screenshot": ""
-"tags": []
+"tags":
+- "color": "#2563EB"
+  "id": 3
+  "name": "test"
+  "value": ""
 "timeout": 48
 "tls_ca": ""
 "tls_cert": ""
