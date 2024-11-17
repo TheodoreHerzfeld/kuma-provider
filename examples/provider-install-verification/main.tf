@@ -23,6 +23,10 @@ data "uptime-kuma_monitor" "testmonitordata" {
   id = 16
 }
 
+data "uptime-kuma_tag" "tag" {
+  id = 1
+}
+
 data "uptime-kuma_users" "users" {}
 
 resource "local_sensitive_file" "testmonitordata" {
@@ -36,6 +40,10 @@ output "user" {
 
 output "users" {
   value = data.uptime-kuma_users.users
+}
+
+output "tag" {
+  value = data.uptime-kuma_tag.tag
 }
 
 # resource "uptime-kuma_monitor" "testresource" {
