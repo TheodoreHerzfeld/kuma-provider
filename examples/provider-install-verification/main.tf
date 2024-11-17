@@ -23,13 +23,19 @@ data "uptime-kuma_monitor" "testmonitordata" {
   id = 16
 }
 
+data "uptime-kuma_users" "users" {}
+
 resource "local_sensitive_file" "testmonitordata" {
   filename = "./monitor.yml"
   content = yamlencode(data.uptime-kuma_monitor.testmonitordata)
 }
 
-output "testoutput" {
+output "user" {
   value = data.uptime-kuma_user.testdata
+}
+
+output "users" {
+  value = data.uptime-kuma_users.users
 }
 
 # resource "uptime-kuma_monitor" "testresource" {

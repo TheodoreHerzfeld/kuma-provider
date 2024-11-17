@@ -229,6 +229,12 @@ func (p *uptimeKumaProvider) Configure(ctx context.Context, req provider.Configu
 		Host:  host,
 		Token: loginJson.Access_Token,
 	})
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error marshalling auth data for later use",
+			err.Error(),
+		)
+	}
 
 	resp.DataSourceData = auth
 	resp.ResourceData = auth
@@ -239,6 +245,7 @@ func (p *uptimeKumaProvider) DataSources(_ context.Context) []func() datasource.
 	return []func() datasource.DataSource{
 		NewUserDataSource,
 		NewMonitorDataSource,
+		NewUsersDataSource,
 	}
 }
 
