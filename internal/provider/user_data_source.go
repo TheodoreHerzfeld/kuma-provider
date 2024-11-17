@@ -12,19 +12,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+type data_userAuth struct {
+	Host  string
+	Token string
+}
+
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &authData{}
-	_ datasource.DataSourceWithConfigure = &authData{}
+	_ datasource.DataSource              = &data_userAuth{}
+	_ datasource.DataSourceWithConfigure = &data_userAuth{}
 )
 
 // NewUserDataSource is a helper function to simplify the provider implementation.
 func NewUserDataSource() datasource.DataSource {
-	return &authData{}
+	return &data_userAuth{}
 }
 
 // Configure adds the provider configured client to the data source.
-func (d *authData) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *data_userAuth) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Add a nil check when handling ProviderData because Terraform
 	// sets that data after it calls the ConfigureProvider RPC.
 	if req.ProviderData == nil {
@@ -45,12 +50,12 @@ func (d *authData) Configure(_ context.Context, req datasource.ConfigureRequest,
 }
 
 // Metadata returns the data source type name.
-func (d *authData) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *data_userAuth) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_user"
 }
 
 // Schema defines the schema for the data source.
-func (d *authData) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *data_userAuth) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.Int64Attribute{
@@ -85,7 +90,7 @@ type JSON_userDataModel struct {
 }
 
 // Read refreshes the Terraform state with the latest data.
-func (d *authData) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *data_userAuth) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 
 	var state userDataModel
 
@@ -115,8 +120,8 @@ func (d *authData) Read(ctx context.Context, req datasource.ReadRequest, resp *d
 	state.Created_At = types.StringValue(tout.Created_At)
 	state.Last_Visit = types.StringValue(tout.Last_Visit)
 
-	setDiags := resp.State.Set(ctx, &state)
-	resp.Diagnostics.Append(setDiags...)
+	diags = resp.State.Set(ctx, &state)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
