@@ -2,16 +2,16 @@ speakeasyVersion: 1.441.0
 sources:
     uptime-kuma-OAS:
         sourceNamespace: uptime-kuma-oas
-        sourceRevisionDigest: sha256:bf20301d29ab89d1493e9566d56758f5a4a45ccd9508c540be767ae3bc33ba72
-        sourceBlobDigest: sha256:9086614bd2133cb9c14bd5eb0457aff1c9ec0134cca2d3efaa5d347b7cdd49f7
+        sourceRevisionDigest: sha256:39feed53f07f85a3fe16f595a06dd844fc205e1e6d3e9ed809e843cb644d4185
+        sourceBlobDigest: sha256:2563f9caf2b461cf6321f3f004de7d8fdc86fb297cbddd58e1311181aea46110
         tags:
             - latest
 targets:
     uptime-kuma:
         source: uptime-kuma-OAS
         sourceNamespace: uptime-kuma-oas
-        sourceRevisionDigest: sha256:bf20301d29ab89d1493e9566d56758f5a4a45ccd9508c540be767ae3bc33ba72
-        sourceBlobDigest: sha256:9086614bd2133cb9c14bd5eb0457aff1c9ec0134cca2d3efaa5d347b7cdd49f7
+        sourceRevisionDigest: sha256:39feed53f07f85a3fe16f595a06dd844fc205e1e6d3e9ed809e843cb644d4185
+        sourceBlobDigest: sha256:2563f9caf2b461cf6321f3f004de7d8fdc86fb297cbddd58e1311181aea46110
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

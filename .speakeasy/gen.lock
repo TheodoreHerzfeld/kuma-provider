@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 1e161246-2412-4249-8d43-edf873a69195
 management:
-  docChecksum: d829371f0ac3f9e7ec4ed7557a29f77c
+  docChecksum: 651686e7e59f7faec1189f7893a2eb0e
   docVersion: 0.1.0
   speakeasyVersion: 1.441.0
   generationVersion: 2.460.1
-  releaseVersion: 0.0.8
-  configChecksum: 7325a0fb4d9db628ab4e808942b1369b
+  releaseVersion: 0.1.0
+  configChecksum: 936a2eb1ca25fdb155e1654c3de6bafd
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -15,13 +15,21 @@ features:
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.9
     globalServerURLs: 2.82.1
+    nameOverrides: 2.81.2
     unions: 2.81.17
 generatedFiles:
   - .gitattributes
   - CONTRIBUTING.md
   - USAGE.md
   - examples/README.md
+  - examples/data-sources/uptime-kuma_monitor/data-source.tf
+  - examples/data-sources/uptime-kuma_monitors/data-source.tf
+  - examples/data-sources/uptime-kuma_user/data-source.tf
   - examples/provider/provider.tf
+  - examples/resources/uptime-kuma_monitor/import.sh
+  - examples/resources/uptime-kuma_monitor/resource.tf
+  - examples/resources/uptime-kuma_user/import.sh
+  - examples/resources/uptime-kuma_user/resource.tf
   - go.mod
   - go.sum
   - internal/planmodifiers/boolplanmodifier/suppress_diff.go
@@ -34,6 +42,12 @@ generatedFiles:
   - internal/planmodifiers/setplanmodifier/suppress_diff.go
   - internal/planmodifiers/stringplanmodifier/suppress_diff.go
   - internal/planmodifiers/utils/state_check.go
+  - internal/provider/monitor_data_source.go
+  - internal/provider/monitor_data_source_sdk.go
+  - internal/provider/monitor_resource.go
+  - internal/provider/monitor_resource_sdk.go
+  - internal/provider/monitors_data_source.go
+  - internal/provider/monitors_data_source_sdk.go
   - internal/provider/provider.go
   - internal/provider/reflect/diags.go
   - internal/provider/reflect/doc.go
@@ -49,6 +63,11 @@ generatedFiles:
   - internal/provider/reflect/primitive.go
   - internal/provider/reflect/slice.go
   - internal/provider/reflect/struct.go
+  - internal/provider/types/notificationidlist.go
+  - internal/provider/user_data_source.go
+  - internal/provider/user_data_source_sdk.go
+  - internal/provider/user_resource.go
+  - internal/provider/user_resource_sdk.go
   - internal/provider/utils.go
   - internal/sdk/.gitattributes
   - internal/sdk/.gitignore
@@ -138,7 +157,6 @@ generatedFiles:
   - internal/sdk/models/shared/registeruser.go
   - internal/sdk/models/shared/savestatuspagerequest.go
   - internal/sdk/models/shared/savestatuspageresponse.go
-  - internal/sdk/models/shared/schemasmonitormonitor.go
   - internal/sdk/models/shared/schemasstatuspagemonitor.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/statuspage.go
@@ -240,7 +258,7 @@ examples:
   create_monitor_monitors_post:
     speakeasy-default-create-monitor-monitors-post:
       requestBody:
-        application/json: {"type": "keyword", "name": "<value>"}
+        application/json: {"name": "<value>", "type": "keyword", "expiryNotification": true, "ignoreTls": false, "upsideDown": true}
       responses:
         "200":
           application/json: "<value>"
@@ -252,7 +270,7 @@ examples:
           monitor_id: 727114
       responses:
         "200":
-          application/json: "<value>"
+          application/json: {"expiryNotification": false, "ignoreTls": true, "upsideDown": false}
         "422": {}
   delete_monitor_monitors__monitor_id__delete:
     speakeasy-default-delete-monitor-monitors-monitor-id-delete:
