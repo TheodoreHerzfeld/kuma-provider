@@ -1,0 +1,12 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    uptime-kuma-OAS:
+        inputs:
+            - location: ./openapi.json
+        registry:
+            location: registry.speakeasyapi.dev/kuma-provider/kuma-provider/uptime-kuma-oas
+targets:
+    uptime-kuma:
+        target: terraform
+        source: uptime-kuma-OAS

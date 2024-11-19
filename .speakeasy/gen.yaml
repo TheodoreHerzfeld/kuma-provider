@@ -1,0 +1,24 @@
+configVersion: 2.0.0
+generation:
+  sdkClassName: UptimeKuma
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+  auth:
+    oAuth2ClientCredentialsEnabled: true
+    oAuth2PasswordEnabled: true
+terraform:
+  version: 0.0.8
+  additionalDataSources: []
+  additionalDependencies: {}
+  additionalResources: []
+  allowUnknownFieldsInWeakUnions: false
+  author: TheodoreHerzfeld
+  defaultErrorName: APIError
+  environmentVariables: []
+  packageName: uptime-kuma

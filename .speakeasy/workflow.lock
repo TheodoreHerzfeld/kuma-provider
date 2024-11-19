@@ -1,0 +1,27 @@
+speakeasyVersion: 1.441.0
+sources:
+    uptime-kuma-OAS:
+        sourceNamespace: uptime-kuma-oas
+        sourceRevisionDigest: sha256:bf20301d29ab89d1493e9566d56758f5a4a45ccd9508c540be767ae3bc33ba72
+        sourceBlobDigest: sha256:9086614bd2133cb9c14bd5eb0457aff1c9ec0134cca2d3efaa5d347b7cdd49f7
+        tags:
+            - latest
+targets:
+    uptime-kuma:
+        source: uptime-kuma-OAS
+        sourceNamespace: uptime-kuma-oas
+        sourceRevisionDigest: sha256:bf20301d29ab89d1493e9566d56758f5a4a45ccd9508c540be767ae3bc33ba72
+        sourceBlobDigest: sha256:9086614bd2133cb9c14bd5eb0457aff1c9ec0134cca2d3efaa5d347b7cdd49f7
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        uptime-kuma-OAS:
+            inputs:
+                - location: ./openapi.json
+            registry:
+                location: registry.speakeasyapi.dev/kuma-provider/kuma-provider/uptime-kuma-oas
+    targets:
+        uptime-kuma:
+            target: terraform
+            source: uptime-kuma-OAS

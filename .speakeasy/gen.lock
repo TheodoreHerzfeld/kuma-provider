@@ -1,0 +1,502 @@
+lockVersion: 2.0.0
+id: 1e161246-2412-4249-8d43-edf873a69195
+management:
+  docChecksum: d829371f0ac3f9e7ec4ed7557a29f77c
+  docVersion: 0.1.0
+  speakeasyVersion: 1.441.0
+  generationVersion: 2.460.1
+  releaseVersion: 0.0.8
+  configChecksum: 7325a0fb4d9db628ab4e808942b1369b
+features:
+  terraform:
+    additionalDependencies: 0.1.0
+    constsAndDefaults: 0.2.0
+    core: 3.26.3
+    envVarSecurityUsage: 0.1.0
+    globalSecurity: 2.81.9
+    globalServerURLs: 2.82.1
+    unions: 2.81.17
+generatedFiles:
+  - .gitattributes
+  - CONTRIBUTING.md
+  - USAGE.md
+  - examples/README.md
+  - examples/provider/provider.tf
+  - go.mod
+  - go.sum
+  - internal/planmodifiers/boolplanmodifier/suppress_diff.go
+  - internal/planmodifiers/float64planmodifier/suppress_diff.go
+  - internal/planmodifiers/int64planmodifier/suppress_diff.go
+  - internal/planmodifiers/listplanmodifier/suppress_diff.go
+  - internal/planmodifiers/mapplanmodifier/suppress_diff.go
+  - internal/planmodifiers/numberplanmodifier/suppress_diff.go
+  - internal/planmodifiers/objectplanmodifier/suppress_diff.go
+  - internal/planmodifiers/setplanmodifier/suppress_diff.go
+  - internal/planmodifiers/stringplanmodifier/suppress_diff.go
+  - internal/planmodifiers/utils/state_check.go
+  - internal/provider/provider.go
+  - internal/provider/reflect/diags.go
+  - internal/provider/reflect/doc.go
+  - internal/provider/reflect/generic_attr_value.go
+  - internal/provider/reflect/helpers.go
+  - internal/provider/reflect/interfaces.go
+  - internal/provider/reflect/into.go
+  - internal/provider/reflect/map.go
+  - internal/provider/reflect/number.go
+  - internal/provider/reflect/options.go
+  - internal/provider/reflect/outof.go
+  - internal/provider/reflect/pointer.go
+  - internal/provider/reflect/primitive.go
+  - internal/provider/reflect/slice.go
+  - internal/provider/reflect/struct.go
+  - internal/provider/utils.go
+  - internal/sdk/.gitattributes
+  - internal/sdk/.gitignore
+  - internal/sdk/CONTRIBUTING.md
+  - internal/sdk/authentication.go
+  - internal/sdk/certificationinfo.go
+  - internal/sdk/database.go
+  - internal/sdk/informations.go
+  - internal/sdk/internal/hooks/hooks.go
+  - internal/sdk/internal/utils/contenttype.go
+  - internal/sdk/internal/utils/form.go
+  - internal/sdk/internal/utils/headers.go
+  - internal/sdk/internal/utils/json.go
+  - internal/sdk/internal/utils/pathparams.go
+  - internal/sdk/internal/utils/queryparams.go
+  - internal/sdk/internal/utils/requestbody.go
+  - internal/sdk/internal/utils/retries.go
+  - internal/sdk/internal/utils/security.go
+  - internal/sdk/internal/utils/utils.go
+  - internal/sdk/maintenance.go
+  - internal/sdk/models/errors/apierror.go
+  - internal/sdk/models/operations/addmonitormaintenancemaintenancemaintenanceidmonitorsget.go
+  - internal/sdk/models/operations/addmonitormaintenancemaintenancemaintenanceidmonitorspost.go
+  - internal/sdk/models/operations/addmonitortagmonitorsmonitoridtagpost.go
+  - internal/sdk/models/operations/addstatuspagestatuspagespost.go
+  - internal/sdk/models/operations/addtagstagspost.go
+  - internal/sdk/models/operations/createmaintenancemaintenancepost.go
+  - internal/sdk/models/operations/createmonitormonitorspost.go
+  - internal/sdk/models/operations/createuseruserspost.go
+  - internal/sdk/models/operations/deletemaintenancemaintenancemaintenanceiddelete.go
+  - internal/sdk/models/operations/deletemonitormonitorsmonitoriddelete.go
+  - internal/sdk/models/operations/deletemonitortagmonitorsmonitoridtagdelete.go
+  - internal/sdk/models/operations/deletestatuspagestatuspagesslugdelete.go
+  - internal/sdk/models/operations/deletetagtagstagiddelete.go
+  - internal/sdk/models/operations/deleteuserusersusernamedelete.go
+  - internal/sdk/models/operations/getallstatuspagesstatuspagesget.go
+  - internal/sdk/models/operations/getavgpingpingget.go
+  - internal/sdk/models/operations/getcertinfocertinfoget.go
+  - internal/sdk/models/operations/getdbsizedatabasesizeget.go
+  - internal/sdk/models/operations/getinfoinfoget.go
+  - internal/sdk/models/operations/getmaintenancemaintenancemaintenanceidget.go
+  - internal/sdk/models/operations/getmaintenancesmaintenanceget.go
+  - internal/sdk/models/operations/getmonitormonitorsmonitoridget.go
+  - internal/sdk/models/operations/getmonitorsmonitorsget.go
+  - internal/sdk/models/operations/getstatuspagestatuspagesslugget.go
+  - internal/sdk/models/operations/gettagstagsget.go
+  - internal/sdk/models/operations/gettagtagstagidget.go
+  - internal/sdk/models/operations/getuptimeuptimeget.go
+  - internal/sdk/models/operations/getusersusersget.go
+  - internal/sdk/models/operations/getuserusersusernameget.go
+  - internal/sdk/models/operations/loginaccesstokenloginaccesstokenpost.go
+  - internal/sdk/models/operations/monitorbeatsmonitorsmonitoridbeatsget.go
+  - internal/sdk/models/operations/options.go
+  - internal/sdk/models/operations/pausemaintenancemaintenancemaintenanceidpausepost.go
+  - internal/sdk/models/operations/pausemonitormonitorsmonitoridpausepost.go
+  - internal/sdk/models/operations/postincidentstatuspagesslugincidentpost.go
+  - internal/sdk/models/operations/resumemaintenancemaintenancemaintenanceidresumepost.go
+  - internal/sdk/models/operations/resumemonitormonitorsmonitoridresumepost.go
+  - internal/sdk/models/operations/savestatuspagestatuspagesslugpost.go
+  - internal/sdk/models/operations/shrinkdbdatabaseshrinkpost.go
+  - internal/sdk/models/operations/unpinincidentstatuspagesslugincidentunpindelete.go
+  - internal/sdk/models/operations/updatemaintenancemaintenancemaintenanceidpatch.go
+  - internal/sdk/models/operations/updatemonitormonitorsmonitoridpatch.go
+  - internal/sdk/models/operations/uploadbackupsettingsuploadbackuppost.go
+  - internal/sdk/models/shared/addstatuspagerequest.go
+  - internal/sdk/models/shared/addstatuspageresponse.go
+  - internal/sdk/models/shared/backup.go
+  - internal/sdk/models/shared/bodyloginaccesstokenloginaccesstokenpost.go
+  - internal/sdk/models/shared/deletestatuspageresponse.go
+  - internal/sdk/models/shared/httpnotfounderror.go
+  - internal/sdk/models/shared/httpvalidationerror.go
+  - internal/sdk/models/shared/importhandletype.go
+  - internal/sdk/models/shared/incident.go
+  - internal/sdk/models/shared/jwtoken.go
+  - internal/sdk/models/shared/maintenance.go
+  - internal/sdk/models/shared/maintenancestrategy.go
+  - internal/sdk/models/shared/maintenanceupdate.go
+  - internal/sdk/models/shared/monitorlistitem.go
+  - internal/sdk/models/shared/monitormaintenance.go
+  - internal/sdk/models/shared/monitortag.go
+  - internal/sdk/models/shared/monitortype.go
+  - internal/sdk/models/shared/monitorupdate.go
+  - internal/sdk/models/shared/notificationlistitem.go
+  - internal/sdk/models/shared/postincidentrequest.go
+  - internal/sdk/models/shared/postincidentresponse.go
+  - internal/sdk/models/shared/publicgroup.go
+  - internal/sdk/models/shared/registeruser.go
+  - internal/sdk/models/shared/savestatuspagerequest.go
+  - internal/sdk/models/shared/savestatuspageresponse.go
+  - internal/sdk/models/shared/schemasmonitormonitor.go
+  - internal/sdk/models/shared/schemasstatuspagemonitor.go
+  - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/statuspage.go
+  - internal/sdk/models/shared/statuspagelist.go
+  - internal/sdk/models/shared/tag.go
+  - internal/sdk/models/shared/unpinincidentresponse.go
+  - internal/sdk/models/shared/user.go
+  - internal/sdk/models/shared/validationerror.go
+  - internal/sdk/monitor.go
+  - internal/sdk/pingaverage.go
+  - internal/sdk/retry/config.go
+  - internal/sdk/settings.go
+  - internal/sdk/statuspage.go
+  - internal/sdk/tags.go
+  - internal/sdk/types/bigint.go
+  - internal/sdk/types/date.go
+  - internal/sdk/types/datetime.go
+  - internal/sdk/types/decimal.go
+  - internal/sdk/types/pointers.go
+  - internal/sdk/uptime.go
+  - internal/sdk/uptimekuma.go
+  - internal/sdk/users.go
+  - internal/validators/DateValidator.go
+  - internal/validators/ExactlyOneChild.go
+  - internal/validators/JSONParseValidator.go
+  - internal/validators/RFC3339Validator.go
+  - internal/validators/boolvalidators/not_null.go
+  - internal/validators/float64validators/not_null.go
+  - internal/validators/int64validators/not_null.go
+  - internal/validators/listvalidators/not_null.go
+  - internal/validators/mapvalidators/not_null.go
+  - internal/validators/numbervalidators/not_null.go
+  - internal/validators/objectvalidators/not_null.go
+  - internal/validators/setvalidators/not_null.go
+  - internal/validators/stringvalidators/not_null.go
+  - main.go
+  - terraform-registry-manifest.json
+  - tools/tools.go
+examples:
+  get_users_users_get:
+    speakeasy-default-get-users-users-get:
+      responses:
+        "200":
+          application/json: [{"id": 584630, "username": "Domenica_Price-Monahan", "created_at": "2023-11-29T22:09:29.200Z", "last_visit": "2023-07-18T16:25:10.523Z"}, {"id": 371078, "username": "Cooper.Mann19", "created_at": "2023-10-12T15:27:10.659Z", "last_visit": "2023-02-07T11:13:24.494Z"}, {"id": 433594, "username": "Rosella.Schinner77", "created_at": "2023-12-18T22:56:22.328Z", "last_visit": "2022-11-03T19:08:06.786Z"}]
+  create_user_users_post:
+    speakeasy-default-create-user-users-post:
+      requestBody:
+        application/json: {"username": "Estevan11", "password": "rCG8MqlpaR0tUHB"}
+      responses:
+        "200":
+          application/json: {"id": 251837, "username": "Zena.Dickinson17", "created_at": "2024-03-05T05:07:41.236Z", "last_visit": "2022-06-04T05:48:04.720Z"}
+        "422": {}
+  get_user_users__username__get:
+    speakeasy-default-get-user-users-username-get:
+      parameters:
+        path:
+          username: "Arlie_Reilly33"
+      responses:
+        "200":
+          application/json: {"id": 701314, "username": "Kaden_Cummerata16", "created_at": "2024-09-17T10:23:30.042Z", "last_visit": "2024-06-16T08:40:12.800Z"}
+        "404":
+          application/json: {"detail": "<value>"}
+        "422": {}
+  delete_user_users__username__delete:
+    speakeasy-default-delete-user-users-username-delete:
+      parameters:
+        path:
+          username: "Myrtle.Schowalter22"
+      responses:
+        "200":
+          application/json: "<value>"
+        "404":
+          application/json: {"detail": "<value>"}
+        "422": {}
+  upload_backup_settings_upload_backup_post:
+    speakeasy-default-upload-backup-settings-upload-backup-post:
+      parameters:
+        query:
+          import_handle: "skip"
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  get_db_size_database_size_get:
+    speakeasy-default-get-db-size-database-size-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  shrink_db_database_shrink_post:
+    speakeasy-default-shrink-db-database-shrink-post:
+      responses:
+        "200":
+          application/json: "<value>"
+  get_monitors_monitors_get:
+    speakeasy-default-get-monitors-monitors-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  create_monitor_monitors_post:
+    speakeasy-default-create-monitor-monitors-post:
+      requestBody:
+        application/json: {"type": "keyword", "name": "<value>"}
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  get_monitor_monitors__monitor_id__get:
+    speakeasy-default-get-monitor-monitors-monitor-id-get:
+      parameters:
+        path:
+          monitor_id: 727114
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  delete_monitor_monitors__monitor_id__delete:
+    speakeasy-default-delete-monitor-monitors-monitor-id-delete:
+      parameters:
+        path:
+          monitor_id: 608768
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  update_monitor_monitors__monitor_id__patch:
+    speakeasy-default-update-monitor-monitors-monitor-id-patch:
+      parameters:
+        path:
+          monitor_id: 499100
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  pause_monitor_monitors__monitor_id__pause_post:
+    speakeasy-default-pause-monitor-monitors-monitor-id-pause-post:
+      parameters:
+        path:
+          monitor_id: 466336
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  resume_monitor_monitors__monitor_id__resume_post:
+    speakeasy-default-resume-monitor-monitors-monitor-id-resume-post:
+      parameters:
+        path:
+          monitor_id: 977705
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  monitor_beats_monitors__monitor_id__beats_get:
+    speakeasy-default-monitor-beats-monitors-monitor-id-beats-get:
+      parameters:
+        path:
+          monitor_id: 281764
+        query: {}
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  add_monitor_tag_monitors__monitor_id__tag_post:
+    speakeasy-default-add-monitor-tag-monitors-monitor-id-tag-post:
+      parameters:
+        path:
+          monitor_id: 95280
+      requestBody:
+        application/json: {"tag_id": 786784}
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  delete_monitor_tag_monitors__monitor_id__tag_delete:
+    speakeasy-default-delete-monitor-tag-monitors-monitor-id-tag-delete:
+      parameters:
+        path:
+          monitor_id: 730462
+      requestBody:
+        application/json: {"tag_id": 959913}
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  get_all_status_pages_statuspages_get: {}
+  add_status_page_statuspages_post: {}
+  get_status_page_statuspages__slug__get:
+    speakeasy-default-get-status-page-statuspages-slug-get:
+      parameters:
+        path:
+          slug: "<value>"
+      responses:
+        "200":
+          application/json: {"domainNameList": ["https://impartial-crocodile.com/"], "icon": "<value>", "id": 390392, "published": true, "showPoweredBy": true, "showTags": false, "slug": "<value>", "theme": "<value>", "title": "<value>"}
+        "422": {}
+  save_status_page_statuspages__slug__post:
+    speakeasy-default-save-status-page-statuspages-slug-post:
+      parameters:
+        path:
+          slug: "<value>"
+  delete_status_page_statuspages__slug__delete:
+    speakeasy-default-delete-status-page-statuspages-slug-delete:
+      parameters:
+        path:
+          slug: "<value>"
+  post_incident_statuspages__slug__incident_post:
+    speakeasy-default-post-incident-statuspages-slug-incident-post:
+      parameters:
+        path:
+          slug: "<value>"
+      requestBody:
+        application/json: {"title": "<value>", "content": "<value>"}
+      responses:
+        "200":
+          application/json: {"content": "<value>", "createdDate": "<value>", "id": 530704, "pin": false, "style": "<value>", "title": "<value>"}
+        "422": {}
+  unpin_incident_statuspages__slug__incident_unpin_delete:
+    speakeasy-default-unpin-incident-statuspages-slug-incident-unpin-delete:
+      parameters:
+        path:
+          slug: "<value>"
+      responses:
+        "200":
+          application/json: {"detail": "<value>"}
+        "422": {}
+  get_maintenances_maintenance_get:
+    speakeasy-default-get-maintenances-maintenance-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  create_maintenance_maintenance_post:
+    speakeasy-default-create-maintenance-maintenance-post:
+      requestBody:
+        application/json: {"title": "<value>", "strategy": "cron"}
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  get_maintenance_maintenance__maintenance_id__get:
+    speakeasy-default-get-maintenance-maintenance-maintenance-id-get:
+      parameters:
+        path:
+          maintenance_id: 823312
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  delete_maintenance_maintenance__maintenance_id__delete:
+    speakeasy-default-delete-maintenance-maintenance-maintenance-id-delete:
+      parameters:
+        path:
+          maintenance_id: 690549
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  update_maintenance_maintenance__maintenance_id__patch:
+    speakeasy-default-update-maintenance-maintenance-maintenance-id-patch:
+      parameters:
+        path:
+          maintenance_id: 715768
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  pause_maintenance_maintenance__maintenance_id__pause_post:
+    speakeasy-default-pause-maintenance-maintenance-maintenance-id-pause-post:
+      parameters:
+        path:
+          maintenance_id: 284986
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  resume_maintenance_maintenance__maintenance_id__resume_post:
+    speakeasy-default-resume-maintenance-maintenance-maintenance-id-resume-post:
+      parameters:
+        path:
+          maintenance_id: 208845
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  add_monitor_maintenance_maintenance__maintenance_id__monitors_get:
+    speakeasy-default-add-monitor-maintenance-maintenance-maintenance-id-monitors-get:
+      parameters:
+        path:
+          maintenance_id: 240174
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  add_monitor_maintenance_maintenance__maintenance_id__monitors_post:
+    speakeasy-default-add-monitor-maintenance-maintenance-maintenance-id-monitors-post:
+      parameters:
+        path:
+          maintenance_id: 525993
+      requestBody:
+        application/json: [{"id": 909873, "name": "<value>"}, {"id": 226047, "name": "<value>"}]
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  get_tags_tags_get:
+    speakeasy-default-get-tags-tags-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  add_tags_tags_post:
+    speakeasy-default-add-tags-tags-post:
+      requestBody:
+        application/json: {"name": "<value>", "color": "cyan"}
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  get_tag_tags__tag_id__get:
+    speakeasy-default-get-tag-tags-tag-id-get:
+      parameters:
+        path:
+          tag_id: 491726
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  delete_tag_tags__tag_id__delete:
+    speakeasy-default-delete-tag-tags-tag-id-delete:
+      parameters:
+        path:
+          tag_id: 399930
+      responses:
+        "200":
+          application/json: "<value>"
+        "422": {}
+  get_cert_info_cert_info_get:
+    speakeasy-default-get-cert-info-cert-info-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  get_info_info_get:
+    speakeasy-default-get-info-info-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  get_avg_ping_ping_get:
+    speakeasy-default-get-avg-ping-ping-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  get_uptime_uptime_get:
+    speakeasy-default-get-uptime-uptime-get:
+      responses:
+        "200":
+          application/json: "<value>"
+  login_access_token_login_access_token_post:
+    speakeasy-default-login-access-token-login-access-token-post:
+      requestBody:
+        application/x-www-form-urlencoded: {"username": "Destin90", "password": "q3KmmpgNGMBE3aW"}
+      responses:
+        "200":
+          application/json: {"access_token": "<value>"}
+        "422": {}
