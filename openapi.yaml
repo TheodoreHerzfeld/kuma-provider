@@ -1,0 +1,2235 @@
+openapi: 3.0.2
+info:
+  title: Uptime-Kuma-API
+  version: 0.1.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get Users
+      operationId: get_users_users_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Users Users Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      x-speakeasy-entity-operation: User#create
+      tags:
+        - Users
+      summary: Create User
+      description: Sign up.
+      operationId: create_user_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterUser"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  "/users/{username}":
+    get:
+      x-speakeasy-entity-operation: User#read
+      tags:
+        - Users
+      summary: Get User
+      operationId: get_user_users__username__get
+      parameters:
+        - required: true
+          schema:
+            title: Username
+            type: string
+          name: username
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPNotFoundError"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      x-speakeasy-entity-operation: User#delete
+      tags:
+        - Users
+      summary: Delete User
+      operationId: delete_user_users__username__delete
+      parameters:
+        - required: true
+          schema:
+            title: Username
+            type: string
+          name: username
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPNotFoundError"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  /settings/upload_backup:
+    post:
+      tags:
+        - Settings
+      summary: Upload Backup
+      description: Upload a Backup
+      operationId: upload_backup_settings_upload_backup_post
+      parameters:
+        - required: true
+          schema:
+            $ref: "#/components/schemas/ImportHandleType"
+          name: import_handle
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Backup"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  /database/size:
+    get:
+      tags:
+        - DataBase
+      summary: Get Db Size
+      description: Get DataBase Size
+      operationId: get_db_size_database_size_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /database/shrink:
+    post:
+      tags:
+        - DataBase
+      summary: Shrink Db
+      description: Shrink DataBase
+      operationId: shrink_db_database_shrink_post
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /monitors:
+    get:
+      x-speakeasy-entity-operation: Monitors#read
+      tags:
+        - Monitor
+      summary: Get Monitors
+      description: Get all Monitors
+      operationId: get_monitors_monitors_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      x-speakeasy-entity-operation: Monitor#create
+      tags:
+        - Monitor
+      summary: Create Monitor
+      description: Create a Monitor
+      operationId: create_monitor_monitors_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/schemas__monitor__Monitor"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonitorListItem'
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/monitors/{monitor_id}":
+    get:
+      x-speakeasy-entity-operation: Monitor#read
+      tags:
+        - Monitor
+      summary: Get Monitor
+      description: Get Monitor By ID
+      operationId: get_monitor_monitors__monitor_id__get
+      parameters:
+        - required: true
+          x-speakeasy-name-override: id
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonitorListItem'
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - Monitor
+      summary: Delete Monitor
+      description: Delete a specific Monitor
+      operationId: delete_monitor_monitors__monitor_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    patch:
+      tags:
+        - Monitor
+      summary: Update Monitor
+      description: Update a specific Monitor
+      operationId: update_monitor_monitors__monitor_id__patch
+      parameters:
+        - required: true
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonitorUpdate"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/monitors/{monitor_id}/pause":
+    post:
+      tags:
+        - Monitor
+      summary: Pause Monitor
+      description: Pause a specific Monitor
+      operationId: pause_monitor_monitors__monitor_id__pause_post
+      parameters:
+        - required: true
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/monitors/{monitor_id}/resume":
+    post:
+      tags:
+        - Monitor
+      summary: Resume Monitor
+      description: Resume a specific Monitor
+      operationId: resume_monitor_monitors__monitor_id__resume_post
+      parameters:
+        - required: true
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/monitors/{monitor_id}/beats":
+    get:
+      tags:
+        - Monitor
+      summary: Monitor Beats
+      description: Get Monitor Beats in the last N hours ( by default its 1 hour)
+      operationId: monitor_beats_monitors__monitor_id__beats_get
+      parameters:
+        - required: true
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+        - required: false
+          schema:
+            title: Hours
+            type: number
+            default: 1
+          name: hours
+          in: query
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/monitors/{monitor_id}/tag":
+    post:
+      tags:
+        - Monitor
+      summary: Add Monitor Tag
+      description: Add an already created tag to a specific monitor
+      operationId: add_monitor_tag_monitors__monitor_id__tag_post
+      parameters:
+        - required: true
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonitorTag"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - Monitor
+      summary: Delete Monitor Tag
+      description: Delete a tag from a specific monitor
+      operationId: delete_monitor_tag_monitors__monitor_id__tag_delete
+      parameters:
+        - required: true
+          schema:
+            title: Monitor Id
+            type: integer
+          name: monitor_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonitorTag"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  /statuspages:
+    get:
+      tags:
+        - Status Page
+      summary: Get All Status Pages
+      description: Get all status pages
+      operationId: get_all_status_pages_statuspages_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusPageList"
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Status Page
+      summary: Add Status Page
+      description: Add a status page
+      operationId: add_status_page_statuspages_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddStatusPageRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddStatusPageResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/statuspages/{slug}":
+    get:
+      tags:
+        - Status Page
+      summary: Get Status Page
+      description: Get a status page
+      operationId: get_status_page_statuspages__slug__get
+      parameters:
+        - required: true
+          schema:
+            title: Slug
+            type: string
+          name: slug
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusPage"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Status Page
+      summary: Save Status Page
+      description: Save a status page
+      operationId: save_status_page_statuspages__slug__post
+      parameters:
+        - required: true
+          schema:
+            title: Slug
+            type: string
+          name: slug
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SaveStatusPageRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SaveStatusPageResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - Status Page
+      summary: Delete Status Page
+      description: Delete a status page
+      operationId: delete_status_page_statuspages__slug__delete
+      parameters:
+        - required: true
+          schema:
+            title: Slug
+            type: string
+          name: slug
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteStatusPageResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/statuspages/{slug}/incident":
+    post:
+      tags:
+        - Status Page
+      summary: Post Incident
+      description: Post an incident to a status page
+      operationId: post_incident_statuspages__slug__incident_post
+      parameters:
+        - required: true
+          schema:
+            title: Slug
+            type: string
+          name: slug
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostIncidentRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostIncidentResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/statuspages/{slug}/incident/unpin":
+    delete:
+      tags:
+        - Status Page
+      summary: Unpin Incident
+      description: Unpin an incident from a status page
+      operationId: unpin_incident_statuspages__slug__incident_unpin_delete
+      parameters:
+        - required: true
+          schema:
+            title: Slug
+            type: string
+          name: slug
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnpinIncidentResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  /maintenance:
+    get:
+      tags:
+        - Maintenance
+      summary: Get Maintenances
+      description: Get all Maintenances
+      operationId: get_maintenances_maintenance_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Maintenance
+      summary: Create Maintenance
+      description: Create a Maintenance
+      operationId: create_maintenance_maintenance_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Maintenance"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/maintenance/{maintenance_id}":
+    get:
+      tags:
+        - Maintenance
+      summary: Get Maintenance
+      description: Get Maintenance By ID
+      operationId: get_maintenance_maintenance__maintenance_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Maintenance Id
+            type: integer
+          name: maintenance_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - Maintenance
+      summary: Delete Maintenance
+      description: Delete a specific Maintenance
+      operationId: delete_maintenance_maintenance__maintenance_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Maintenance Id
+            type: integer
+          name: maintenance_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    patch:
+      tags:
+        - Maintenance
+      summary: Update Maintenance
+      description: Update a specific Maintenance
+      operationId: update_maintenance_maintenance__maintenance_id__patch
+      parameters:
+        - required: true
+          schema:
+            title: Maintenance Id
+            type: integer
+          name: maintenance_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MaintenanceUpdate"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/maintenance/{maintenance_id}/pause":
+    post:
+      tags:
+        - Maintenance
+      summary: Pause Maintenance
+      description: Pause a specific maintenance
+      operationId: pause_maintenance_maintenance__maintenance_id__pause_post
+      parameters:
+        - required: true
+          schema:
+            title: Maintenance Id
+            type: integer
+          name: maintenance_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/maintenance/{maintenance_id}/resume":
+    post:
+      tags:
+        - Maintenance
+      summary: Resume Maintenance
+      description: Resume a specific maintenance
+      operationId: resume_maintenance_maintenance__maintenance_id__resume_post
+      parameters:
+        - required: true
+          schema:
+            title: Maintenance Id
+            type: integer
+          name: maintenance_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/maintenance/{maintenance_id}/monitors":
+    get:
+      tags:
+        - Maintenance
+      summary: Add Monitor Maintenance
+      description: Get monitors to a maintenance.
+      operationId: add_monitor_maintenance_maintenance__maintenance_id__monitors_get
+      parameters:
+        - required: true
+          schema:
+            title: Maintenance Id
+            type: integer
+          name: maintenance_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Maintenance
+      summary: Add Monitor Maintenance
+      description: Adds monitors to a maintenance.
+      operationId: add_monitor_maintenance_maintenance__maintenance_id__monitors_post
+      parameters:
+        - required: true
+          schema:
+            title: Maintenance Id
+            type: integer
+          name: maintenance_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Monitors
+              type: array
+              items:
+                $ref: "#/components/schemas/MonitorMaintenance"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  /tags:
+    get:
+      tags:
+        - Tags
+      summary: Get Tags
+      description: Get all tags
+      operationId: get_tags_tags_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Tags
+      summary: Add Tags
+      description: Add a tag by name and color
+      operationId: add_tags_tags_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  "/tags/{tag_id}":
+    get:
+      tags:
+        - Tags
+      summary: Get Tag
+      description: Get a Tag By ID
+      operationId: get_tag_tags__tag_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Tag Id
+            type: integer
+          name: tag_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - Tags
+      summary: Delete Tag
+      description: Delete a specific Tag By ID
+      operationId: delete_tag_tags__tag_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Tag Id
+            type: integer
+          name: tag_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+      security:
+        - OAuth2PasswordBearer: []
+  /cert_info:
+    get:
+      tags:
+        - Certification Info
+      summary: Get Cert Info
+      description: Get Certification Info
+      operationId: get_cert_info_cert_info_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /info:
+    get:
+      tags:
+        - Informations
+      summary: Get Info
+      description: Informations
+      operationId: get_info_info_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /ping:
+    get:
+      tags:
+        - Ping Average
+      summary: Get Avg Ping
+      description: Get AVG Ping
+      operationId: get_avg_ping_ping_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /uptime:
+    get:
+      tags:
+        - Uptime
+      summary: Get Uptime
+      description: Uptime
+      operationId: get_uptime_uptime_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /login/access-token:
+    post:
+      tags:
+        - Authentication
+      summary: Login Access Token
+      operationId: login_access_token_login_access_token_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Body_login_access_token_login_access_token_post"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JWToken"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+components:
+  schemas:
+    AddStatusPageRequest:
+      title: AddStatusPageRequest
+      type: object
+      properties:
+        slug:
+          title: Slug
+          type: string
+        title:
+          title: Title
+          type: string
+        msg:
+          title: Msg
+          type: string
+    AddStatusPageResponse:
+      title: AddStatusPageResponse
+      type: object
+      properties:
+        msg:
+          title: Msg
+          type: string
+    AuthMethod:
+      title: AuthMethod
+      enum:
+        - ""
+        - basic
+        - ntlm
+        - mtls
+      type: string
+      description: Enumerate authentication methods for monitors.
+    Backup:
+      title: Backup
+      type: object
+      properties:
+        version:
+          title: Version
+          type: string
+        notificationList:
+          title: Notificationlist
+          type: array
+          items:
+            $ref: "#/components/schemas/NotificationListItem"
+        monitorList:
+          title: Monitorlist
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorListItem"
+        proxyList:
+          title: Proxylist
+          type: array
+          items: {}
+    Body_login_access_token_login_access_token_post:
+      title: Body_login_access_token_login_access_token_post
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        grant_type:
+          title: Grant Type
+          pattern: password
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+        scope:
+          title: Scope
+          type: string
+          default: ""
+        client_id:
+          title: Client Id
+          type: string
+        client_secret:
+          title: Client Secret
+          type: string
+    DeleteStatusPageResponse:
+      title: DeleteStatusPageResponse
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: string
+          description: Error detail, if any
+    HTTPNotFoundError:
+      title: HTTPNotFoundError
+      required:
+        - detail
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: string
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+    ImportHandleType:
+      title: ImportHandleType
+      enum:
+        - skip
+        - overwrite
+        - keep
+      type: string
+      description: An enumeration.
+    Incident:
+      title: Incident
+      required:
+        - content
+        - createdDate
+        - id
+        - pin
+        - style
+        - title
+      type: object
+      properties:
+        content:
+          title: Content
+          type: string
+        createdDate:
+          title: Createddate
+          type: string
+        id:
+          title: Id
+          type: integer
+        lastUpdatedDate:
+          title: Lastupdateddate
+          type: string
+        pin:
+          title: Pin
+          type: integer
+        style:
+          title: Style
+          type: string
+        title:
+          title: Title
+          type: string
+    IncidentStyle:
+      title: IncidentStyle
+      enum:
+        - info
+        - warning
+        - danger
+        - primary
+        - light
+        - dark
+      type: string
+      description: Enumerate incident styles.
+    JWToken:
+      title: JWToken
+      required:
+        - access_token
+      type: object
+      properties:
+        access_token:
+          title: Access Token
+          type: string
+        token_type:
+          title: Token Type
+          type: string
+          default: Bearer
+    Maintenance:
+      title: Maintenance
+      required:
+        - title
+        - strategy
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        strategy:
+          $ref: "#/components/schemas/MaintenanceStrategy"
+        active:
+          title: Active
+          type: boolean
+          default: true
+        description:
+          title: Description
+          type: string
+          default: ""
+        dateRange:
+          title: Daterange
+          type: array
+          items: {}
+          default:
+            - 2024-11-18 00:00:00
+        intervalDay:
+          title: Intervalday
+          type: integer
+          default: 1
+        weekdays:
+          title: Weekdays
+          type: array
+          items: {}
+          default: []
+        daysOfMonth:
+          title: Daysofmonth
+          type: array
+          items: {}
+          default: []
+        timeRange:
+          title: Timerange
+          type: array
+          items: {}
+          default:
+            - hours: 2
+              minutes: 0
+            - hours: 3
+              minutes: 0
+      description: >-
+        Title (str) – Title.
+
+
+        strategy (MaintenanceStrategy) – Strategy
+
+
+        active (bool, optional) – True if maintenance is active, defaults to True
+
+
+        description (str, optional) – Description, defaults to ""
+
+
+        dateRange (list, optional) – DateTime Range, defaults to ["<current date>"]
+
+
+        intervalDay (int, optional) – Interval (Run once every day), defaults to 1
+
+
+        weekdays (list, optional) – List that contains the days of the week on which the maintenance is enabled (Sun = 0, Mon = 1, …, Sat = 6). Required for strategy RECURRING_WEEKDAY., defaults to [].
+
+
+        daysOfMonth (list, optional) – List that contains the days of the month on which the maintenance is enabled (Day 1 = 1, Day 2 = 2, …, Day 31 = 31) and the last day of the month (Last Day of Month = "lastDay1", 2nd Last Day of Month = "lastDay2", 3rd Last Day of Month = "lastDay3", 4th Last Day of Month = "lastDay4"). Required for strategy RECURRING_DAY_OF_MONTH., defaults to [].
+
+
+        timeRange (list, optional) – Maintenance Time Window of a Day, defaults to [{"hours": 2, "minutes": 0}, {"hours": 3, "minutes": 0}].
+    MaintenanceStrategy:
+      title: MaintenanceStrategy
+      enum:
+        - manual
+        - single
+        - recurring-interval
+        - recurring-weekday
+        - recurring-day-of-month
+        - cron
+      type: string
+      description: Enumerate maintenance strategies.
+    MaintenanceUpdate:
+      title: MaintenanceUpdate
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        strategy:
+          $ref: "#/components/schemas/MaintenanceStrategy"
+        active:
+          title: Active
+          type: boolean
+          default: true
+        description:
+          title: Description
+          type: string
+          default: ""
+        dateRange:
+          title: Daterange
+          type: array
+          items: {}
+          default:
+            - 2024-11-18 00:00:00
+        intervalDay:
+          title: Intervalday
+          type: integer
+          default: 1
+        weekdays:
+          title: Weekdays
+          type: array
+          items: {}
+          default: []
+        daysOfMonth:
+          title: Daysofmonth
+          type: array
+          items: {}
+          default: []
+        timeRange:
+          title: Timerange
+          type: array
+          items: {}
+          default:
+            - hours: 2
+              minutes: 0
+            - hours: 3
+              minutes: 0
+      description: >-
+        Title (str) – Title.
+
+
+        strategy (MaintenanceStrategy) – Strategy
+
+
+        active (bool, optional) – True if maintenance is active, defaults to True
+
+
+        description (str, optional) – Description, defaults to ""
+
+
+        dateRange (list, optional) – DateTime Range, defaults to ["<current date>"]
+
+
+        intervalDay (int, optional) – Interval (Run once every day), defaults to 1
+
+
+        weekdays (list, optional) – List that contains the days of the week on which the maintenance is enabled (Sun = 0, Mon = 1, …, Sat = 6). Required for strategy RECURRING_WEEKDAY., defaults to [].
+
+
+        daysOfMonth (list, optional) – List that contains the days of the month on which the maintenance is enabled (Day 1 = 1, Day 2 = 2, …, Day 31 = 31) and the last day of the month (Last Day of Month = "lastDay1", 2nd Last Day of Month = "lastDay2", 3rd Last Day of Month = "lastDay3", 4th Last Day of Month = "lastDay4"). Required for strategy RECURRING_DAY_OF_MONTH., defaults to [].
+
+
+        timeRange (list, optional) – Maintenance Time Window of a Day, defaults to [{"hours": 2, "minutes": 0}, {"hours": 3, "minutes": 0}].
+    MonitorListItem:
+      title: MonitorListItem
+      required:
+        - expiryNotification
+        - ignoreTls
+        - upsideDown
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+        url:
+          title: Url
+          type: string
+        method:
+          title: Method
+          type: string
+        hostname:
+          title: Hostname
+        port:
+          title: Port
+          type: integer
+        maxretries:
+          title: Maxretries
+          type: integer
+        weight:
+          title: Weight
+          type: integer
+        active:
+          title: Active
+          type: integer
+        type:
+          title: Type
+          type: string
+        interval:
+          title: Interval
+          type: integer
+        retryInterval:
+          title: Retryinterval
+          type: integer
+        resendInterval:
+          title: Resendinterval
+          type: integer
+        keyword:
+          title: Keyword
+        expiryNotification:
+          title: Expirynotification
+          type: boolean
+        ignoreTls:
+          title: Ignoretls
+          type: boolean
+        upsideDown:
+          title: Upsidedown
+          type: boolean
+        maxredirects:
+          title: Maxredirects
+          type: integer
+        accepted_statuscodes:
+          title: Accepted Statuscodes
+          type: array
+          items:
+            type: string
+        dns_resolve_type:
+          title: Dns Resolve Type
+          type: string
+        dns_resolve_server:
+          title: Dns Resolve Server
+          type: string
+        dns_last_result:
+          title: Dns Last Result
+        pushToken:
+          title: Pushtoken
+        docker_container:
+          title: Docker Container
+        docker_host:
+          title: Docker Host
+        proxyId:
+          title: Proxyid
+        notificationIDList:
+          title: Notificationidlist
+          type: object
+        tags:
+          title: Tags
+          type: array
+          items: {}
+        mqttUsername:
+          title: Mqttusername
+        mqttPassword:
+          title: Mqttpassword
+        mqttTopic:
+          title: Mqtttopic
+        mqttSuccessMessage:
+          title: Mqttsuccessmessage
+        databaseConnectionString:
+          title: Databaseconnectionstring
+        databaseQuery:
+          title: Databasequery
+        authMethod:
+          title: Authmethod
+          type: string
+        authWorkstation:
+          title: Authworkstation
+        authDomain:
+          title: Authdomain
+        radiusUsername:
+          title: Radiususername
+        radiusPassword:
+          title: Radiuspassword
+        radiusCalledStationId:
+          title: Radiuscalledstationid
+        radiusCallingStationId:
+          title: Radiuscallingstationid
+        radiusSecret:
+          title: Radiussecret
+        headers:
+          title: Headers
+        body:
+          title: Body
+        basic_auth_user:
+          title: Basic Auth User
+        basic_auth_pass:
+          title: Basic Auth Pass
+    MonitorMaintenance:
+      title: MonitorMaintenance
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+    MonitorTag:
+      title: MonitorTag
+      required:
+        - tag_id
+      type: object
+      properties:
+        tag_id:
+          title: Tag Id
+          type: integer
+        value:
+          title: Value
+          type: string
+          default: ""
+    MonitorType:
+      title: MonitorType
+      enum:
+        - http
+        - port
+        - ping
+        - keyword
+        - grpc-keyword
+        - dns
+        - docker
+        - push
+        - steam
+        - gamedig
+        - mqtt
+        - sqlserver
+        - postgres
+        - mysql
+        - mongodb
+        - radius
+        - redis
+      type: string
+      description: Enumerate monitor types.
+    MonitorUpdate:
+      title: MonitorUpdate
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/MonitorType"
+        name:
+          title: Name
+          type: string
+        interval:
+          title: Interval
+          type: integer
+          default: 60
+        retryInterval:
+          title: Retryinterval
+          type: integer
+          default: 60
+        resendInterval:
+          title: Resendinterval
+          type: integer
+          default: 0
+        maxretries:
+          title: Maxretries
+          type: integer
+          default: 0
+        upsideDown:
+          title: Upsidedown
+          type: boolean
+          default: false
+        notificationIDList:
+          title: Notificationidlist
+          type: array
+          items: {}
+        url:
+          title: Url
+          type: string
+        expiryNotification:
+          title: Expirynotification
+          type: boolean
+          default: false
+        ignoreTls:
+          title: Ignoretls
+          type: boolean
+          default: false
+        maxredirects:
+          title: Maxredirects
+          type: integer
+          default: 10
+        accepted_statuscodes:
+          title: Accepted Statuscodes
+          type: array
+          items: {}
+        proxyId:
+          title: Proxyid
+          type: integer
+        method:
+          title: Method
+          type: string
+          default: GET
+        body:
+          title: Body
+          type: string
+        headers:
+          title: Headers
+          type: string
+        authMethod:
+          allOf:
+            - $ref: "#/components/schemas/AuthMethod"
+          default: ""
+        basic_auth_user:
+          title: Basic Auth User
+          type: string
+        basic_auth_pass:
+          title: Basic Auth Pass
+          type: string
+        authDomain:
+          title: Authdomain
+          type: string
+        authWorkstation:
+          title: Authworkstation
+          type: string
+        keyword:
+          title: Keyword
+          type: string
+        hostname:
+          title: Hostname
+          type: string
+        port:
+          title: Port
+          type: integer
+          default: 53
+        dns_resolve_server:
+          title: Dns Resolve Server
+          type: string
+          default: 1.1.1.1
+        dns_resolve_type:
+          title: Dns Resolve Type
+          type: string
+          default: A
+        mqttUsername:
+          title: Mqttusername
+          type: string
+        mqttPassword:
+          title: Mqttpassword
+          type: string
+        mqttTopic:
+          title: Mqtttopic
+          type: string
+        mqttSuccessMessage:
+          title: Mqttsuccessmessage
+          type: string
+        databaseConnectionString:
+          title: Databaseconnectionstring
+          type: string
+        databaseQuery:
+          title: Databasequery
+          type: string
+        docker_container:
+          title: Docker Container
+          type: string
+          default: ""
+        docker_host:
+          title: Docker Host
+          type: integer
+        radiusUsername:
+          title: Radiususername
+          type: string
+        radiusPassword:
+          title: Radiuspassword
+          type: string
+        radiusSecret:
+          title: Radiussecret
+          type: string
+        radiusCalledStationId:
+          title: Radiuscalledstationid
+          type: string
+        radiusCallingStationId:
+          title: Radiuscallingstationid
+          type: string
+    NotificationListItem:
+      title: NotificationListItem
+      required:
+        - id
+        - name
+        - config
+        - active
+        - userId
+        - isDefault
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+        config:
+          title: Config
+          type: string
+        active:
+          title: Active
+          type: boolean
+        userId:
+          title: Userid
+          type: integer
+        isDefault:
+          title: Isdefault
+          type: boolean
+    PostIncidentRequest:
+      title: PostIncidentRequest
+      required:
+        - title
+        - content
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        content:
+          title: Content
+          type: string
+        style:
+          allOf:
+            - $ref: "#/components/schemas/IncidentStyle"
+          default: primary
+    PostIncidentResponse:
+      title: PostIncidentResponse
+      required:
+        - content
+        - createdDate
+        - id
+        - pin
+        - style
+        - title
+      type: object
+      properties:
+        content:
+          title: Content
+          type: string
+        createdDate:
+          title: Createddate
+          type: string
+        id:
+          title: Id
+          type: integer
+        pin:
+          title: Pin
+          type: boolean
+        style:
+          title: Style
+          type: string
+        title:
+          title: Title
+          type: string
+    PublicGroup:
+      title: PublicGroup
+      required:
+        - id
+        - monitorList
+        - name
+        - weight
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        monitorList:
+          title: Monitorlist
+          type: array
+          items:
+            $ref: "#/components/schemas/schemas__statuspage__Monitor"
+        name:
+          title: Name
+          type: string
+        weight:
+          title: Weight
+          type: integer
+    RegisterUser:
+      x-speakeasy-entity: User
+      title: RegisterUser
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+    SaveStatusPageRequest:
+      title: SaveStatusPageRequest
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        description:
+          title: Description
+          type: string
+        theme:
+          title: Theme
+          type: string
+          default: light
+        published:
+          title: Published
+          type: boolean
+          default: true
+        showTags:
+          title: Showtags
+          type: boolean
+          default: false
+        domainNameList:
+          title: Domainnamelist
+          type: array
+          items:
+            maxLength: 2083
+            minLength: 1
+            type: string
+            format: uri
+          default: []
+        googleAnalyticsId:
+          title: Googleanalyticsid
+          type: string
+        customCSS:
+          title: Customcss
+          type: string
+          default: ""
+        footerText:
+          title: Footertext
+          type: string
+        showPoweredBy:
+          title: Showpoweredby
+          type: boolean
+          default: true
+        icon:
+          title: Icon
+          type: string
+          default: /icon.svg
+        publicGroupList:
+          title: Publicgrouplist
+          type: array
+          items: {}
+    SaveStatusPageResponse:
+      title: SaveStatusPageResponse
+      type: object
+      properties:
+        detail:
+          title: Detail
+    StatusPage:
+      title: StatusPage
+      required:
+        - domainNameList
+        - icon
+        - id
+        - published
+        - showPoweredBy
+        - showTags
+        - slug
+        - theme
+        - title
+      type: object
+      properties:
+        customCSS:
+          title: Customcss
+          type: string
+        description:
+          title: Description
+          type: string
+        domainNameList:
+          title: Domainnamelist
+          type: array
+          items:
+            maxLength: 2083
+            minLength: 1
+            type: string
+            format: uri
+        footerText:
+          title: Footertext
+          type: string
+        googleAnalyticsId:
+          title: Googleanalyticsid
+          type: string
+        icon:
+          title: Icon
+          type: string
+        id:
+          title: Id
+          type: integer
+        incident:
+          $ref: "#/components/schemas/Incident"
+        maintenanceList:
+          title: Maintenancelist
+          type: array
+          items: {}
+        published:
+          title: Published
+          type: boolean
+        showPoweredBy:
+          title: Showpoweredby
+          type: boolean
+        showTags:
+          title: Showtags
+          type: boolean
+        slug:
+          title: Slug
+          minLength: 1
+          type: string
+        theme:
+          title: Theme
+          type: string
+        title:
+          title: Title
+          type: string
+        publicGroupList:
+          title: Publicgrouplist
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicGroup"
+    StatusPageList:
+      title: StatusPageList
+      type: object
+      properties:
+        statuspages:
+          title: Statuspages
+          type: array
+          items:
+            $ref: "#/components/schemas/StatusPage"
+          default: []
+    Tag:
+      title: Tag
+      required:
+        - name
+        - color
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        color:
+          title: Color
+          type: string
+    UnpinIncidentResponse:
+      title: UnpinIncidentResponse
+      required:
+        - detail
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: string
+    User:
+      title: User
+      required:
+        - id
+        - username
+        - created_at
+        - last_visit
+      type: object
+      properties:
+        id:
+          title: Id
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+        username:
+          title: Username
+          maxLength: 20
+          type: string
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+          readOnly: true
+        last_visit:
+          title: Last Visit
+          type: string
+          format: date-time
+          readOnly: true
+      additionalProperties: false
+      description: The User model.
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+    schemas__monitor__Monitor:
+      title: Monitor
+      required:
+        - type
+        - name
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/MonitorType"
+        name:
+          title: Name
+          type: string
+        interval:
+          title: Interval
+          type: integer
+          default: 60
+        retryInterval:
+          title: Retryinterval
+          type: integer
+          default: 60
+        resendInterval:
+          title: Resendinterval
+          type: integer
+          default: 0
+        maxretries:
+          title: Maxretries
+          type: integer
+          default: 0
+        upsideDown:
+          title: Upsidedown
+          type: boolean
+          default: false
+        notificationIDList:
+          title: Notificationidlist
+          type: array
+          items: {}
+        url:
+          title: Url
+          type: string
+        expiryNotification:
+          title: Expirynotification
+          type: boolean
+          default: false
+        ignoreTls:
+          title: Ignoretls
+          type: boolean
+          default: false
+        maxredirects:
+          title: Maxredirects
+          type: integer
+          default: 10
+        accepted_statuscodes:
+          title: Accepted Statuscodes
+          type: array
+          items: {}
+        proxyId:
+          title: Proxyid
+          type: integer
+        method:
+          title: Method
+          type: string
+          default: GET
+        body:
+          title: Body
+          type: string
+        headers:
+          title: Headers
+          type: string
+        authMethod:
+          allOf:
+            - $ref: "#/components/schemas/AuthMethod"
+          default: ""
+        basic_auth_user:
+          title: Basic Auth User
+          type: string
+        basic_auth_pass:
+          title: Basic Auth Pass
+          type: string
+        authDomain:
+          title: Authdomain
+          type: string
+        authWorkstation:
+          title: Authworkstation
+          type: string
+        keyword:
+          title: Keyword
+          type: string
+        hostname:
+          title: Hostname
+          type: string
+        port:
+          title: Port
+          type: integer
+          default: 53
+        dns_resolve_server:
+          title: Dns Resolve Server
+          type: string
+          default: 1.1.1.1
+        dns_resolve_type:
+          title: Dns Resolve Type
+          type: string
+          default: A
+        mqttUsername:
+          title: Mqttusername
+          type: string
+        mqttPassword:
+          title: Mqttpassword
+          type: string
+        mqttTopic:
+          title: Mqtttopic
+          type: string
+        mqttSuccessMessage:
+          title: Mqttsuccessmessage
+          type: string
+        databaseConnectionString:
+          title: Databaseconnectionstring
+          type: string
+        databaseQuery:
+          title: Databasequery
+          type: string
+        docker_container:
+          title: Docker Container
+          type: string
+          default: ""
+        docker_host:
+          title: Docker Host
+          type: integer
+        radiusUsername:
+          title: Radiususername
+          type: string
+        radiusPassword:
+          title: Radiuspassword
+          type: string
+        radiusSecret:
+          title: Radiussecret
+          type: string
+        radiusCalledStationId:
+          title: Radiuscalledstationid
+          type: string
+        radiusCallingStationId:
+          title: Radiuscallingstationid
+          type: string
+    schemas__statuspage__Monitor:
+      title: Monitor
+      required:
+        - id
+        - name
+        - sendUrl
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        maintenance:
+          title: Maintenance
+          type: boolean
+        name:
+          title: Name
+          type: string
+        sendUrl:
+          title: Sendurl
+          type: integer
+  securitySchemes:
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: /login/access-token/

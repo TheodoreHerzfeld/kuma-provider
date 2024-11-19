@@ -116,7 +116,7 @@ terraform {
   required_providers {
     uptime-kuma = {
       source  = "TheodoreHerzfeld/uptime-kuma"
-      version = "0.0.8"
+      version = "0.1.0"
     }
   }
 }
@@ -132,7 +132,13 @@ provider "uptime-kuma" {
 
 ### Resources
 
+* [uptime-kuma_monitor](docs/resources/monitor.md)
+* [uptime-kuma_user](docs/resources/user.md)
 ### Data Sources
+
+* [uptime-kuma_monitor](docs/data-sources/monitor.md)
+* [uptime-kuma_monitors](docs/data-sources/monitors.md)
+* [uptime-kuma_user](docs/data-sources/user.md)
 <!-- End Available Resources and Data Sources [operations] -->
 
 <!-- Start Testing the provider locally [usage] -->
